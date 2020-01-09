@@ -1,0 +1,359 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`events _initEventHandlers 1`] = `
+Events {
+  "_active": true,
+  "_debug": [MockFunction],
+  "_eventHandlers": Object {
+    "event1": Array [],
+    "event2": Array [],
+    "event3": Array [],
+    "event4": Array [],
+  },
+  "_events": Array [
+    "event1",
+    "event2",
+  ],
+  "_resolveHandleEvent": [Function],
+  "_triggers": Object {
+    "event1": [Function],
+    "event2": [Function],
+    "event3": [Function],
+    "event4": [Function],
+  },
+}
+`;
+
+exports[`events _resolveHandleEvent 1`] = `
+Events {
+  "_active": true,
+  "_debug": [MockFunction],
+  "_eventHandlers": Object {
+    "event1": Array [],
+    "event2": Array [
+      [MockFunction] {
+        "calls": Array [
+          Array [
+            Object {},
+          ],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      },
+    ],
+  },
+  "_events": Array [
+    "event1",
+    "event2",
+  ],
+  "_resolveHandleEvent": [Function],
+  "_triggers": Object {
+    "event1": [Function],
+    "event2": [Function],
+  },
+}
+`;
+
+exports[`events activate/deactivate 1`] = `
+Events {
+  "_active": true,
+  "_debug": [MockFunction],
+  "_eventHandlers": Object {
+    "event1": Array [],
+    "event2": Array [
+      [MockFunction] {
+        "calls": Array [
+          Array [
+            Object {},
+          ],
+          Array [
+            Object {},
+          ],
+          Array [
+            Object {},
+          ],
+          Array [
+            Object {},
+          ],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      },
+    ],
+  },
+  "_events": Array [
+    "event1",
+    "event2",
+  ],
+  "_resolveHandleEvent": [Function],
+  "_triggers": Object {
+    "event1": [Function],
+    "event2": [Function],
+  },
+}
+`;
+
+exports[`events eachTriggers 1`] = `
+Events {
+  "_active": true,
+  "_debug": [MockFunction],
+  "_eventHandlers": Object {
+    "event1": Array [],
+    "event2": Array [],
+  },
+  "_events": Array [
+    "event1",
+    "event2",
+  ],
+  "_resolveHandleEvent": [Function],
+  "_triggers": Object {
+    "event1": [Function],
+    "event2": [Function],
+  },
+}
+`;
+
+exports[`events get triggers 1`] = `
+Events {
+  "_active": true,
+  "_debug": [MockFunction],
+  "_eventHandlers": Object {
+    "event1": Array [],
+    "event2": Array [],
+  },
+  "_events": Array [
+    "event1",
+    "event2",
+  ],
+  "_resolveHandleEvent": [Function],
+  "_triggers": Object {
+    "event1": [Function],
+    "event2": [Function],
+  },
+}
+`;
+
+exports[`events handle errors 1`] = `
+Events {
+  "_active": true,
+  "_debug": [MockFunction] {
+    "calls": Array [
+      Array [
+        [Error: Error],
+      ],
+      Array [
+        [Error: Error],
+      ],
+    ],
+    "results": Array [
+      Object {
+        "type": "return",
+        "value": undefined,
+      },
+      Object {
+        "type": "return",
+        "value": undefined,
+      },
+    ],
+  },
+  "_eventHandlers": Object {
+    "event1": Array [],
+    "event2": Array [
+      [Function],
+      [MockFunction] {
+        "calls": Array [
+          Array [
+            Object {},
+          ],
+          Array [
+            Object {},
+          ],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      },
+    ],
+  },
+  "_events": Array [
+    "event1",
+    "event2",
+  ],
+  "_resolveHandleEvent": [Function],
+  "_triggers": Object {
+    "event1": [Function],
+    "event2": [Function],
+  },
+}
+`;
+
+exports[`events off 1`] = `
+Events {
+  "_active": true,
+  "_debug": [MockFunction],
+  "_eventHandlers": Object {
+    "event1": Array [],
+    "event2": Array [],
+  },
+  "_events": Array [
+    "event1",
+    "event2",
+  ],
+  "_resolveHandleEvent": [Function],
+  "_triggers": Object {
+    "event1": [Function],
+    "event2": [Function],
+  },
+}
+`;
+
+exports[`events on 1`] = `
+Events {
+  "_active": true,
+  "_debug": [MockFunction],
+  "_eventHandlers": Object {
+    "event1": Array [],
+    "event2": Array [
+      [MockFunction],
+    ],
+  },
+  "_events": Array [
+    "event1",
+    "event2",
+  ],
+  "_resolveHandleEvent": [Function],
+  "_triggers": Object {
+    "event1": [Function],
+    "event2": [Function],
+  },
+}
+`;
+
+exports[`events once 1`] = `
+Events {
+  "_active": true,
+  "_debug": [MockFunction],
+  "_eventHandlers": Object {
+    "event1": Array [],
+    "event2": Array [
+      [MockFunction] {
+        "calls": Array [
+          Array [
+            Object {},
+          ],
+          Array [
+            Object {},
+          ],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      },
+    ],
+  },
+  "_events": Array [
+    "event1",
+    "event2",
+  ],
+  "_resolveHandleEvent": [Function],
+  "_triggers": Object {
+    "event1": [Function],
+    "event2": [Function],
+  },
+}
+`;
+
+exports[`events removeEventHandlers 1`] = `
+Events {
+  "_active": true,
+  "_debug": [MockFunction],
+  "_eventHandlers": Object {
+    "event1": Array [],
+    "event2": Array [],
+  },
+  "_events": Array [
+    "event1",
+    "event2",
+  ],
+  "_resolveHandleEvent": [Function],
+  "_triggers": Object {
+    "event1": [Function],
+    "event2": [Function],
+  },
+}
+`;
+
+exports[`events trigger 1`] = `
+Events {
+  "_active": true,
+  "_debug": [MockFunction],
+  "_eventHandlers": Object {
+    "event1": Array [],
+    "event2": Array [
+      [MockFunction] {
+        "calls": Array [
+          Array [
+            Object {},
+          ],
+          Array [
+            Object {},
+          ],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      },
+    ],
+  },
+  "_events": Array [
+    "event1",
+    "event2",
+  ],
+  "_resolveHandleEvent": [Function],
+  "_triggers": Object {
+    "event1": [Function],
+    "event2": [Function],
+  },
+}
+`;
