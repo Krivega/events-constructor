@@ -1,5 +1,6 @@
 # events-constructor
 
+![npm](https://img.shields.io/npm/v/events-constructor?style=flat-square)
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/events-constructor?style=flat-square)
 
 Class for emitting events
