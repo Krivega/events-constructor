@@ -1,7 +1,7 @@
 {
   "name": "events-constructor",
   "description": "Events emitter",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "Krivega Dmitriy",
     "email": "mr.krivega@gmail.com",
