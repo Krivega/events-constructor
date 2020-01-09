@@ -1,7 +1,7 @@
 {
   "name": "events-constructor",
   "description": "Class for emitting events",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": {
     "name": "Krivega Dmitriy",
     "email": "mr.krivega@gmail.com",
