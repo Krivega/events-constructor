@@ -5,7 +5,7 @@
  *
  * @return {void}
  */
-const errorNotSupported = eventName => new Error(`Event ${eventName} not supported`);
+const errorNotSupported = (eventName) => new Error(`Event ${eventName} not supported`);
 
 /**
  * Events
@@ -88,7 +88,7 @@ class Events {
   off(eventName, handler) {
     const handlers = this._eventHandlers[eventName];
 
-    this._eventHandlers[eventName] = handlers.filter(item => item !== handler);
+    this._eventHandlers[eventName] = handlers.filter((item) => item !== handler);
   }
 
   /**
@@ -148,7 +148,7 @@ class Events {
    * @returns {void}
    */
   _initEventHandlers(eventsNames) {
-    eventsNames.forEach(eventName => {
+    eventsNames.forEach((eventName) => {
       this._eventHandlers[eventName] = [];
       this._triggers[eventName] = this._resolveHandleEvent(eventName);
     });
@@ -172,14 +172,14 @@ class Events {
     this._active = false;
   }
 
-  _resolveHandleEvent = eventName => (...args) => {
+  _resolveHandleEvent = (eventName) => (...args) => {
     if (!this._active) {
       return undefined;
     }
 
     const eventHandlers = this._eventHandlers[eventName];
 
-    eventHandlers.forEach(eventHandler => {
+    eventHandlers.forEach((eventHandler) => {
       try {
         eventHandler(...args);
       } catch (error) {
