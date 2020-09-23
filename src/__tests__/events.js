@@ -52,6 +52,17 @@ describe('events', () => {
     expect(events).toMatchSnapshot();
   });
 
+  it('once: loopback', () => {
+    const triggerEventName = jest.fn(() => {
+      return events.trigger(eventName, arg);
+    });
+
+    events.once(eventName, triggerEventName);
+
+    triggerEventName();
+    expect(triggerEventName).toHaveBeenCalledTimes(2);
+  });
+
   it('handle errors', () => {
     const mockTriggerOnceFn = jest.fn(() => {
       throw new Error('Error');
@@ -66,18 +77,18 @@ describe('events', () => {
 
     events.trigger(eventName, arg);
 
-    expect(events._eventHandlers[eventName].length).toBe(2);
+    expect(events._eventHandlers[eventName].length).toBe(1);
     expect(debug).toHaveBeenCalledTimes(1);
     expect(mockTriggerOnceFn).toHaveBeenCalledTimes(1);
     expect(mockTriggerOnceFn2).toHaveBeenCalledTimes(1);
 
     events.trigger(eventName, arg);
 
-    expect(mockTriggerOnceFn).toHaveBeenCalledTimes(2);
+    expect(mockTriggerOnceFn).toHaveBeenCalledTimes(1);
     expect(mockTriggerOnceFn2).toHaveBeenCalledTimes(1);
     expect(mockFn).toHaveBeenCalledTimes(2);
-    expect(events._eventHandlers[eventName].length).toBe(2);
-    expect(events._eventHandlers[eventName][1]).toBe(mockFn);
+    expect(events._eventHandlers[eventName].length).toBe(1);
+    expect(events._eventHandlers[eventName][0]).toBe(mockFn);
     expect(events).toMatchSnapshot();
   });
 

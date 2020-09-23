@@ -70,8 +70,8 @@ class Events {
      * @returns {void}
      */
     const onceHandler = (...args) => {
-      handler(...args);
       this.off(eventName, onceHandler);
+      handler(...args);
     };
 
     this.on(eventName, onceHandler);

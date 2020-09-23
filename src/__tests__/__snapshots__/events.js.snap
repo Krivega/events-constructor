@@ -161,15 +161,8 @@ Events {
       Array [
         [Error: Error],
       ],
-      Array [
-        [Error: Error],
-      ],
     ],
     "results": Array [
-      Object {
-        "type": "return",
-        "value": undefined,
-      },
       Object {
         "type": "return",
         "value": undefined,
@@ -179,7 +172,6 @@ Events {
   "_eventHandlers": Object {
     "event1": Array [],
     "event2": Array [
-      [Function],
       [MockFunction] {
         "calls": Array [
           Array [
