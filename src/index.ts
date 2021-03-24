@@ -1,6 +1,6 @@
 type TEvent = string;
-type THandler = (...args: any[]) => void;
-type TTrigger = (...args: any[]) => void;
+type THandler<T = any> = (data: T) => void;
+type TTrigger<T = any> = (data: T) => void;
 
 const errorNotSupported = (eventName: TEvent): Error => {
   const error = new Error(`Event ${eventName} not supported`);
@@ -30,7 +30,7 @@ class Events {
     this._initEventHandlers(this._events);
   }
 
-  on(eventName: TEvent, handler: THandler) {
+  on<T = any>(eventName: TEvent, handler: THandler<T>) {
     const handlers = this._eventHandlers[eventName];
 
     if (handlers) {
@@ -40,13 +40,19 @@ class Events {
     }
   }
 
-  once(eventName: TEvent, handler: THandler) {
-    const onceHandler = (...args: any[]) => {
+  once<T = any>(eventName: TEvent, handler: THandler<T>) {
+    const onceHandler = (data: any) => {
       this.off(eventName, onceHandler);
-      handler(...args);
+      handler(data);
     };
 
     this.on(eventName, onceHandler);
+  }
+
+  wait<T = any>(eventName: TEvent): Promise<T> {
+    return new Promise<T>((resolve) => {
+      this.once<T>(eventName, resolve);
+    });
   }
 
   off(eventName: TEvent, handler: THandler) {
@@ -69,7 +75,7 @@ class Events {
     return this._triggers;
   }
 
-  eachTriggers(handler: THandler) {
+  eachTriggers(handler: (trigger: TTrigger, eventName: TEvent) => void) {
     Object.entries(this._triggers).forEach(([eventName, trigger]) => {
       handler(trigger, eventName);
     });
@@ -82,7 +88,7 @@ class Events {
   _initEventHandlers(eventsNames: TEvent[]) {
     eventsNames.forEach((eventName) => {
       this._eventHandlers[eventName] = [];
-      this._triggers[eventName] = this._resolveHandleEvent(eventName);
+      this._triggers[eventName] = this._resolveTrigger(eventName);
     });
   }
 
@@ -94,26 +100,30 @@ class Events {
     this._active = false;
   }
 
-  _resolveHandleEvent = (eventName: TEvent) => (...args: any[]) => {
-    if (!this._active) {
-      return undefined;
-    }
-
-    const eventHandlers = this._eventHandlers[eventName];
-
-    eventHandlers.forEach((eventHandler) => {
-      try {
-        eventHandler(...args);
-      } catch (error) {
-        if (this._debug) {
-          this._debug(error);
-        } else {
-          throw error;
-        }
+  _resolveTrigger = (eventName: TEvent) => {
+    const trigger: TTrigger = (data: any) => {
+      if (!this._active) {
+        return undefined;
       }
-    });
 
-    return undefined;
+      const eventHandlers = this._eventHandlers[eventName];
+
+      eventHandlers.forEach((eventHandler) => {
+        try {
+          eventHandler(data);
+        } catch (error) {
+          if (this._debug) {
+            this._debug(error);
+          } else {
+            throw error;
+          }
+        }
+      });
+
+      return undefined;
+    };
+
+    return trigger;
   };
 }
 

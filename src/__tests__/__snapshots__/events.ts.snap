@@ -14,7 +14,7 @@ Events {
     "event1",
     "event2",
   ],
-  "_resolveHandleEvent": [Function],
+  "_resolveTrigger": [Function],
   "_triggers": Object {
     "event1": [Function],
     "event2": [Function],
@@ -24,7 +24,7 @@ Events {
 }
 `;
 
-exports[`events _resolveHandleEvent 1`] = `
+exports[`events _resolveTrigger 1`] = `
 Events {
   "_active": true,
   "_debug": [MockFunction],
@@ -50,7 +50,7 @@ Events {
     "event1",
     "event2",
   ],
-  "_resolveHandleEvent": [Function],
+  "_resolveTrigger": [Function],
   "_triggers": Object {
     "event1": [Function],
     "event2": [Function],
@@ -105,7 +105,7 @@ Events {
     "event1",
     "event2",
   ],
-  "_resolveHandleEvent": [Function],
+  "_resolveTrigger": [Function],
   "_triggers": Object {
     "event1": [Function],
     "event2": [Function],
@@ -125,7 +125,7 @@ Events {
     "event1",
     "event2",
   ],
-  "_resolveHandleEvent": [Function],
+  "_resolveTrigger": [Function],
   "_triggers": Object {
     "event1": [Function],
     "event2": [Function],
@@ -145,7 +145,7 @@ Events {
     "event1",
     "event2",
   ],
-  "_resolveHandleEvent": [Function],
+  "_resolveTrigger": [Function],
   "_triggers": Object {
     "event1": [Function],
     "event2": [Function],
@@ -198,7 +198,7 @@ Events {
     "event1",
     "event2",
   ],
-  "_resolveHandleEvent": [Function],
+  "_resolveTrigger": [Function],
   "_triggers": Object {
     "event1": [Function],
     "event2": [Function],
@@ -218,7 +218,7 @@ Events {
     "event1",
     "event2",
   ],
-  "_resolveHandleEvent": [Function],
+  "_resolveTrigger": [Function],
   "_triggers": Object {
     "event1": [Function],
     "event2": [Function],
@@ -240,7 +240,7 @@ Events {
     "event1",
     "event2",
   ],
-  "_resolveHandleEvent": [Function],
+  "_resolveTrigger": [Function],
   "_triggers": Object {
     "event1": [Function],
     "event2": [Function],
@@ -281,7 +281,7 @@ Events {
     "event1",
     "event2",
   ],
-  "_resolveHandleEvent": [Function],
+  "_resolveTrigger": [Function],
   "_triggers": Object {
     "event1": [Function],
     "event2": [Function],
@@ -301,7 +301,7 @@ Events {
     "event1",
     "event2",
   ],
-  "_resolveHandleEvent": [Function],
+  "_resolveTrigger": [Function],
   "_triggers": Object {
     "event1": [Function],
     "event2": [Function],
@@ -342,7 +342,7 @@ Events {
     "event1",
     "event2",
   ],
-  "_resolveHandleEvent": [Function],
+  "_resolveTrigger": [Function],
   "_triggers": Object {
     "event1": [Function],
     "event2": [Function],

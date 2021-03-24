@@ -24,6 +24,19 @@ describe('events', () => {
     expect(events).toMatchSnapshot();
   });
 
+  it('wait', () => {
+    type TTestData = { id: string };
+
+    const testData: TTestData = { id: 'test' };
+    const promise = events.wait<TTestData>(eventName);
+
+    events.trigger(eventName, testData);
+
+    return promise.then((data) => {
+      expect(data).toBe(testData);
+    });
+  });
+
   it('once', () => {
     const mockTriggerOnceFn = jest.fn();
     const mockTriggerOnceFn2 = jest.fn();
@@ -136,9 +149,9 @@ describe('events', () => {
     expect(events).toMatchSnapshot();
   });
 
-  it('_resolveHandleEvent', () => {
+  it('_resolveTrigger', () => {
     events.on(eventName, mockFn);
-    events._resolveHandleEvent(eventName)(arg);
+    events._resolveTrigger(eventName)(arg);
 
     expect(mockFn).toHaveBeenCalledTimes(1);
     expect(mockFn).toBeCalledWith(arg);
