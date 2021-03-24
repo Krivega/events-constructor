@@ -1,8 +1,12 @@
 {
-  "parser": "babel-eslint",
-  "parserOptions": {},
-  "extends": ["plugin:jest/recommended", "airbnb", "prettier"],
-  "plugins": ["jest", "prettier"],
+  "parser": "@typescript-eslint/parser",  
+  "parserOptions": {
+    "project": "tsconfig.json",
+    "sourceType": "module",
+    "tsconfigRootDir": "."
+  },
+  "extends": ["plugin:jest/recommended", "airbnb", "airbnb-typescript", "prettier"],
+  "plugins": ["jest", "prettier", "@typescript-eslint"],
   "env": {
     "browser": true
   },

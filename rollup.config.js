@@ -1,20 +1,22 @@
-import babel from 'rollup-plugin-babel';
-import resolve from '@rollup/plugin-node-resolve';
+import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
 import pkg from './package.json';
 
-export default {
-  input: './src/index.js',
+const plugins = [
+  typescript({
+    useTsconfigDeclarationDir: true,
+    tsconfigOverride: { exclude: ['**/__tests__/**', '**/setupTests.*'] },
+  }),
+  terser(),
+];
 
+const config = {
+  plugins,
+  input: pkg['main:src'],
   output: [
-    {
-      file: pkg.main,
-      format: 'cjs'
-    },
-    {
-      file: pkg.module,
-      format: 'es'
-    }
+    { file: pkg.main, format: 'umd', sourcemap: true, name: 'cancelablePromise' },
+    { file: pkg.module, format: 'es', sourcemap: true },
   ],
-  plugins: [resolve(), babel(), terser()]
 };
+
+export default config;

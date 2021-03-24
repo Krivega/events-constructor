@@ -24,7 +24,7 @@ module.exports = {
   // collectCoverageFrom: null,
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: 'coverage'
+  coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
   // coveragePathIgnorePatterns: [
@@ -123,7 +123,7 @@ module.exports = {
   // runner: "jest-runner",
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  // setupFiles: ['./src/setupTests.js']
+  setupFiles: ['./src/setupTests.ts'],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   // setupFilesAfterEnv: [],
@@ -167,8 +167,10 @@ module.exports = {
   // timers: "real",
 
   // A map from regular expressions to paths to transformers
-  // transform: null,
 
+  transform: {
+    '.(ts|tsx)': 'ts-jest',
+  },
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
   //   "/node_modules/"

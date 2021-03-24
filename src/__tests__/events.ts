@@ -4,15 +4,13 @@ const initEventNames = ['event1', 'event2'];
 const eventNames = ['event3', 'event4'];
 const [, eventName] = initEventNames;
 
-let debug;
-
-let events;
-
-let mockFn;
-
-let arg;
-
 describe('events', () => {
+  let debug: ReturnType<typeof jest.fn>;
+  let events: Events;
+  let mockFn: ReturnType<typeof jest.fn>;
+
+  let arg: any;
+
   beforeEach(() => {
     debug = jest.fn();
     events = new Events(initEventNames, { debug });
@@ -53,9 +51,7 @@ describe('events', () => {
   });
 
   it('once: loopback', () => {
-    const triggerEventName = jest.fn(() => {
-      return events.trigger(eventName, arg);
-    });
+    const triggerEventName = jest.fn(() => events.trigger(eventName, arg));
 
     events.once(eventName, triggerEventName);
 
