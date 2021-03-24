@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/Krivega/events-constructor/compare/v1.0.4...v1.1.0) (2021-03-24)
+
+### Features
+
+- add method wait ([2e01967](https://github.com/Krivega/events-constructor/commit/2e019674148c9673a1e260a40c0db9d8a561b8d8))
+
 ### [1.0.4](https://github.com/Krivega/events-constructor/compare/v1.0.3...v1.0.4) (2020-09-23)
 
 ### Bug Fixes
