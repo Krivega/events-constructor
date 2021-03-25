@@ -1,4 +1,5 @@
 type TEvent = string;
+type TEvents = Readonly<TEvent[]>;
 type THandler<T = any> = (data: T) => void;
 type TTrigger<T = any> = (data: T) => void;
 
@@ -19,11 +20,11 @@ class Events {
     [key: string]: TTrigger;
   } = {};
 
-  _events: TEvent[];
+  _events: TEvents;
 
   _debug?: (error: Error) => void;
 
-  constructor(events: TEvent[], { debug }: { debug?: (error: Error) => void } = {}) {
+  constructor(events: TEvents, { debug }: { debug?: (error: Error) => void } = {}) {
     this._events = events;
     this._debug = debug;
 
@@ -85,7 +86,7 @@ class Events {
     this._initEventHandlers(this._events);
   }
 
-  _initEventHandlers(eventsNames: TEvent[]) {
+  _initEventHandlers(eventsNames: TEvents) {
     eventsNames.forEach((eventName) => {
       this._eventHandlers[eventName] = [];
       this._triggers[eventName] = this._resolveTrigger(eventName);
