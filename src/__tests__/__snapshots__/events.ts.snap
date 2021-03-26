@@ -1,29 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`events _initEventHandlers 1`] = `
-Events {
-  "_active": true,
-  "_debug": [MockFunction],
-  "_eventHandlers": Object {
-    "event1": Array [],
-    "event2": Array [],
-    "event3": Array [],
-    "event4": Array [],
-  },
-  "_events": Array [
-    "event1",
-    "event2",
-  ],
-  "_resolveTrigger": [Function],
-  "_triggers": Object {
-    "event1": [Function],
-    "event2": [Function],
-    "event3": [Function],
-    "event4": [Function],
-  },
-}
-`;
-
 exports[`events _resolveTrigger 1`] = `
 Events {
   "_active": true,

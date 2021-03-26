@@ -1,12 +1,11 @@
 import Events from '../index';
 
-const initEventNames = ['event1', 'event2'];
-const eventNames = ['event3', 'event4'];
+const initEventNames = ['event1', 'event2'] as const;
 const [, eventName] = initEventNames;
 
 describe('events', () => {
   let debug: ReturnType<typeof jest.fn>;
-  let events: Events;
+  let events: Events<typeof initEventNames>;
   let mockFn: ReturnType<typeof jest.fn>;
 
   let arg: any;
@@ -142,13 +141,6 @@ describe('events', () => {
     expect(events).toMatchSnapshot();
   });
 
-  it('_initEventHandlers', () => {
-    events._initEventHandlers(eventNames);
-    expect(events._triggers).toHaveProperty(eventNames[0]);
-    expect(events._triggers).toHaveProperty(eventNames[1]);
-    expect(events).toMatchSnapshot();
-  });
-
   it('_resolveTrigger', () => {
     events.on(eventName, mockFn);
     events._resolveTrigger(eventName)(arg);
@@ -183,17 +175,19 @@ describe('events', () => {
   it('on not supported error', () => {
     const eventNameNotSupported = 'eventName not supported';
 
-    expect(() => {
-      events.on(eventNameNotSupported, mockFn);
-    }).toThrow(new Error(`Event ${eventNameNotSupported} not supported`));
+    // @ts-ignore
+    expect(() => events.on(eventNameNotSupported, mockFn)).toThrow(
+      new Error(`Event ${eventNameNotSupported} not supported`)
+    );
   });
 
   it('trigger not supported error', () => {
     const eventNameNotSupported = 'eventName not supported';
 
-    expect(() => {
-      events.trigger(eventNameNotSupported, mockFn);
-    }).toThrow(new Error(`Event ${eventNameNotSupported} not supported`));
+    // @ts-ignore
+    expect(() => events.trigger(eventNameNotSupported, mockFn)).toThrow(
+      new Error(`Event ${eventNameNotSupported} not supported`)
+    );
   });
 
   it('activate/deactivate', () => {
