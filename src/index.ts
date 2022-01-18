@@ -16,9 +16,9 @@ class Events<T extends Readonly<string[]> = string[]> {
 
   _events: T;
 
-  _debug?: (error: Error) => void;
+  _debug?: (error: unknown) => void;
 
-  constructor(events: T, { debug }: { debug?: (error: Error) => void } = {}) {
+  constructor(events: T, { debug }: { debug?: (error: unknown) => void } = {}) {
     this._events = events;
     this._debug = debug;
 
@@ -62,7 +62,9 @@ class Events<T extends Readonly<string[]> = string[]> {
   off(eventName: T[number], handler: THandler) {
     const handlers: THandler[] = this._eventHandlers[eventName];
 
-    this._eventHandlers[eventName] = handlers?.filter((item) => item !== handler);
+    this._eventHandlers[eventName] = handlers?.filter((item) => {
+      return item !== handler;
+    });
   }
 
   trigger(eventName: T[number], data: any) {

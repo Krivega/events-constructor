@@ -5,7 +5,7 @@
     "sourceType": "module",
     "tsconfigRootDir": "."
   },
-  "extends": ["plugin:jest/recommended", "airbnb", "airbnb-typescript", "prettier"],
+  "extends": ["plugin:jest/recommended", "airbnb-base", "airbnb-typescript/base", "prettier"],
   "plugins": ["jest", "prettier", "@typescript-eslint"],
   "env": {
     "browser": true
@@ -60,6 +60,12 @@
     "prettier/prettier": "error", // approved
     "no-underscore-dangle": "off", // approved
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }], // approved
-    "jest/no-mocks-import": "off" // approved
+    "jest/no-mocks-import": "off",
+    "arrow-body-style": ["error", "always"], 
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "jest/no-conditional-expect": "off"
   }
 }

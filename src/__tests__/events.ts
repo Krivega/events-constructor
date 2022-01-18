@@ -63,7 +63,9 @@ describe('events', () => {
   });
 
   it('once: loopback', () => {
-    const triggerEventName = jest.fn(() => events.trigger(eventName, arg));
+    const triggerEventName = jest.fn(() => {
+      return events.trigger(eventName, arg);
+    });
 
     events.once(eventName, triggerEventName);
 
@@ -175,19 +177,19 @@ describe('events', () => {
   it('on not supported error', () => {
     const eventNameNotSupported = 'eventName not supported';
 
-    // @ts-ignore
-    expect(() => events.on(eventNameNotSupported, mockFn)).toThrow(
-      new Error(`Event ${eventNameNotSupported} not supported`)
-    );
+    expect(() => {
+      // @ts-ignore
+      return events.on(eventNameNotSupported, mockFn);
+    }).toThrow(new Error(`Event ${eventNameNotSupported} not supported`));
   });
 
   it('trigger not supported error', () => {
     const eventNameNotSupported = 'eventName not supported';
 
-    // @ts-ignore
-    expect(() => events.trigger(eventNameNotSupported, mockFn)).toThrow(
-      new Error(`Event ${eventNameNotSupported} not supported`)
-    );
+    expect(() => {
+      // @ts-ignore
+      return events.trigger(eventNameNotSupported, mockFn);
+    }).toThrow(new Error(`Event ${eventNameNotSupported} not supported`));
   });
 
   it('activate/deactivate', () => {
