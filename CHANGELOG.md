@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/Krivega/events-constructor/compare/v1.1.4...v1.2.0) (2022-05-17)
+
+### Features
+
+- add onceRace ([6a6e84a](https://github.com/Krivega/events-constructor/commit/6a6e84a4bf850348967b3bfcbc045f5915863799))
+- on and once now return unsubscribe ([6af0ffd](https://github.com/Krivega/events-constructor/commit/6af0ffda77fffc8c1cf87e4ee201b48954360c77))
+
 ### [1.1.4](https://github.com/Krivega/events-constructor/compare/v1.1.3...v1.1.4) (2022-01-18)
 
 ### [1.1.3](https://github.com/Krivega/events-constructor/compare/v1.1.2...v1.1.3) (2021-04-07)
