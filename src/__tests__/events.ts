@@ -29,7 +29,6 @@ describe('events', () => {
     events.trigger(eventName, arg);
 
     expect(mockFn).toHaveBeenCalledTimes(2);
-    expect(events).toMatchSnapshot();
   });
 
   it('on: returns unsubscribe', () => {
@@ -42,7 +41,6 @@ describe('events', () => {
     events.trigger(eventName, arg);
 
     expect(mockFn).toHaveBeenCalledTimes(0);
-    expect(events).toMatchSnapshot();
   });
 
   it('onceRace', () => {
@@ -61,8 +59,6 @@ describe('events', () => {
     events.trigger(eventName, arg);
 
     expect(mockFn).toHaveBeenCalledTimes(1);
-
-    expect(events).toMatchSnapshot();
   });
 
   it('onceRace: returns unsubscribe', () => {
@@ -75,7 +71,6 @@ describe('events', () => {
     events.trigger(eventName, arg);
 
     expect(mockFn).toHaveBeenCalledTimes(0);
-    expect(events).toMatchSnapshot();
   });
 
   it('wait', () => {
@@ -114,7 +109,6 @@ describe('events', () => {
     expect(mockFn).toHaveBeenCalledTimes(2);
     expect(events._eventHandlers[eventName].length).toBe(1);
     expect(events._eventHandlers[eventName][0]).toBe(mockFn);
-    expect(events).toMatchSnapshot();
   });
 
   it('once: returns unsubscribe', () => {
@@ -127,7 +121,6 @@ describe('events', () => {
     events.trigger(eventName, arg);
 
     expect(mockFn).toHaveBeenCalledTimes(0);
-    expect(events).toMatchSnapshot();
   });
 
   it('once: loopback', () => {
@@ -167,7 +160,6 @@ describe('events', () => {
     expect(mockFn).toHaveBeenCalledTimes(2);
     expect(events._eventHandlers[eventName].length).toBe(1);
     expect(events._eventHandlers[eventName][0]).toBe(mockFn);
-    expect(events).toMatchSnapshot();
   });
 
   it('off', () => {
@@ -177,14 +169,12 @@ describe('events', () => {
 
     expect(mockFn).toHaveBeenCalledTimes(0);
     expect(events._eventHandlers[eventName].length).toBe(0);
-    expect(events).toMatchSnapshot();
   });
 
   it('removeEventHandlers', () => {
     events.on(eventName, mockFn);
     events.removeEventHandlers();
     expect(events._eventHandlers[eventName].length).toBe(0);
-    expect(events).toMatchSnapshot();
   });
 
   it('trigger', () => {
@@ -194,13 +184,11 @@ describe('events', () => {
 
     expect(mockFn).toHaveBeenCalledTimes(2);
     expect(mockFn).toBeCalledWith(arg);
-    expect(events).toMatchSnapshot();
   });
 
   it('get triggers', () => {
     expect(events.triggers).toHaveProperty(initEventNames[0]);
     expect(events._triggers).toHaveProperty(initEventNames[1]);
-    expect(events).toMatchSnapshot();
   });
 
   it('eachTriggers', () => {
@@ -211,7 +199,6 @@ describe('events', () => {
     expect(mockFn.mock.calls[0][1]).toBe(initEventNames[0]);
     expect(mockFn.mock.calls[1][0]).toEqual(expect.any(Function));
     expect(mockFn.mock.calls[1][1]).toBe(initEventNames[1]);
-    expect(events).toMatchSnapshot();
   });
 
   it('_resolveTrigger', () => {
@@ -220,7 +207,6 @@ describe('events', () => {
 
     expect(mockFn).toHaveBeenCalledTimes(1);
     expect(mockFn).toBeCalledWith(arg);
-    expect(events).toMatchSnapshot();
   });
 
   it('error with debug', () => {
@@ -282,7 +268,5 @@ describe('events', () => {
     events.trigger(eventName, arg);
 
     expect(mockFn).toHaveBeenCalledTimes(4);
-
-    expect(events).toMatchSnapshot();
   });
 });
