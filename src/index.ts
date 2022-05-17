@@ -1,5 +1,6 @@
 type THandler<T = any> = (data: T) => void;
 type TTrigger<T = any> = (data: T) => void;
+type THandlerRace<T = any> = (data: T, eventName: string) => void;
 
 const errorNotSupported = <T>(eventName: T): Error => {
   const error = new Error(`Event ${eventName} not supported`);
@@ -55,6 +56,25 @@ class Events<T extends Readonly<string[]> = string[]> {
     };
 
     return this.on(eventName, onceHandler);
+  }
+
+  onceRace<U = any>(eventNames: T[number][], handler: THandlerRace<U>) {
+    let unsubscribes: (() => void)[] = [];
+
+    const unsubscribe = () => {
+      unsubscribes.forEach((unsubscribeItem) => {
+        unsubscribeItem();
+      });
+    };
+
+    unsubscribes = eventNames.map((eventName: string) => {
+      return this.once(eventName, (data: U) => {
+        unsubscribe();
+        handler(data, eventName);
+      });
+    });
+
+    return unsubscribe;
   }
 
   wait<U = any>(eventName: T[number]): Promise<U> {

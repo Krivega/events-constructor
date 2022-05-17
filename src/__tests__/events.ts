@@ -1,7 +1,7 @@
 import Events from '../index';
 
 const initEventNames = ['event1', 'event2'] as const;
-const [, eventName] = initEventNames;
+const [eventName0, eventName] = initEventNames;
 
 describe('events', () => {
   let debug: ReturnType<typeof jest.fn>;
@@ -34,6 +34,39 @@ describe('events', () => {
 
   it('on: returns unsubscribe', () => {
     const unsubscribe = events.on(eventName, mockFn);
+
+    unsubscribe();
+
+    expect(events._eventHandlers[eventName].length).toBe(0);
+
+    events.trigger(eventName, arg);
+
+    expect(mockFn).toHaveBeenCalledTimes(0);
+    expect(events).toMatchSnapshot();
+  });
+
+  it('onceRace', () => {
+    events.onceRace([eventName0, eventName], mockFn);
+
+    expect(events._eventHandlers[eventName].length).toBe(1);
+
+    const arg0 = 'arg0';
+
+    events.trigger(eventName0, arg0);
+
+    expect(mockFn).toHaveBeenCalledTimes(1);
+    expect(mockFn.mock.calls[0][0]).toBe(arg0);
+    expect(mockFn.mock.calls[0][1]).toBe(eventName0);
+
+    events.trigger(eventName, arg);
+
+    expect(mockFn).toHaveBeenCalledTimes(1);
+
+    expect(events).toMatchSnapshot();
+  });
+
+  it('onceRace: returns unsubscribe', () => {
+    const unsubscribe = events.onceRace([eventName0, eventName], mockFn);
 
     unsubscribe();
 
