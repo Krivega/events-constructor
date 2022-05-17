@@ -37,11 +37,15 @@ class Events<T extends Readonly<string[]> = string[]> {
   on<U = any>(eventName: T[number], handler: THandler<U>) {
     const handlers = this._eventHandlers[eventName];
 
-    if (handlers) {
-      handlers.push(handler);
-    } else {
+    if (!handlers) {
       throw errorNotSupported(eventName);
     }
+
+    handlers.push(handler);
+
+    return () => {
+      this.off(eventName, handler);
+    };
   }
 
   once<U = any>(eventName: T[number], handler: THandler<U>) {
@@ -50,7 +54,7 @@ class Events<T extends Readonly<string[]> = string[]> {
       handler(data);
     };
 
-    this.on(eventName, onceHandler);
+    return this.on(eventName, onceHandler);
   }
 
   wait<U = any>(eventName: T[number]): Promise<U> {
@@ -70,11 +74,11 @@ class Events<T extends Readonly<string[]> = string[]> {
   trigger(eventName: T[number], data: any) {
     const trigger = this._triggers[eventName];
 
-    if (trigger) {
-      trigger(data);
-    } else {
+    if (!trigger) {
       throw errorNotSupported(eventName);
     }
+
+    trigger(data);
   }
 
   get triggers() {

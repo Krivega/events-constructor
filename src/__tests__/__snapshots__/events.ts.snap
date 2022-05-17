@@ -209,8 +209,47 @@ Events {
   "_eventHandlers": Object {
     "event1": Array [],
     "event2": Array [
-      [MockFunction],
+      [MockFunction] {
+        "calls": Array [
+          Array [
+            Object {},
+          ],
+          Array [
+            Object {},
+          ],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      },
     ],
+  },
+  "_events": Array [
+    "event1",
+    "event2",
+  ],
+  "_resolveTrigger": [Function],
+  "_triggers": Object {
+    "event1": [Function],
+    "event2": [Function],
+  },
+}
+`;
+
+exports[`events on: returns unsubscribe 1`] = `
+Events {
+  "_active": true,
+  "_debug": [MockFunction],
+  "_eventHandlers": Object {
+    "event1": Array [],
+    "event2": Array [],
   },
   "_events": Array [
     "event1",
@@ -252,6 +291,26 @@ Events {
         ],
       },
     ],
+  },
+  "_events": Array [
+    "event1",
+    "event2",
+  ],
+  "_resolveTrigger": [Function],
+  "_triggers": Object {
+    "event1": [Function],
+    "event2": [Function],
+  },
+}
+`;
+
+exports[`events once: returns unsubscribe 1`] = `
+Events {
+  "_active": true,
+  "_debug": [MockFunction],
+  "_eventHandlers": Object {
+    "event1": Array [],
+    "event2": Array [],
   },
   "_events": Array [
     "event1",

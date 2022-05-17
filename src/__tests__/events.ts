@@ -19,7 +19,29 @@ describe('events', () => {
 
   it('on', () => {
     events.on(eventName, mockFn);
+
     expect(events._eventHandlers[eventName][0]).toBe(mockFn);
+
+    events.trigger(eventName, arg);
+
+    expect(mockFn).toHaveBeenCalledTimes(1);
+
+    events.trigger(eventName, arg);
+
+    expect(mockFn).toHaveBeenCalledTimes(2);
+    expect(events).toMatchSnapshot();
+  });
+
+  it('on: returns unsubscribe', () => {
+    const unsubscribe = events.on(eventName, mockFn);
+
+    unsubscribe();
+
+    expect(events._eventHandlers[eventName].length).toBe(0);
+
+    events.trigger(eventName, arg);
+
+    expect(mockFn).toHaveBeenCalledTimes(0);
     expect(events).toMatchSnapshot();
   });
 
@@ -59,6 +81,19 @@ describe('events', () => {
     expect(mockFn).toHaveBeenCalledTimes(2);
     expect(events._eventHandlers[eventName].length).toBe(1);
     expect(events._eventHandlers[eventName][0]).toBe(mockFn);
+    expect(events).toMatchSnapshot();
+  });
+
+  it('once: returns unsubscribe', () => {
+    const unsubscribe = events.once(eventName, mockFn);
+
+    unsubscribe();
+
+    expect(events._eventHandlers[eventName].length).toBe(0);
+
+    events.trigger(eventName, arg);
+
+    expect(mockFn).toHaveBeenCalledTimes(0);
     expect(events).toMatchSnapshot();
   });
 
@@ -105,6 +140,9 @@ describe('events', () => {
   it('off', () => {
     events.on(eventName, mockFn);
     events.off(eventName, mockFn);
+    events.trigger(eventName, arg);
+
+    expect(mockFn).toHaveBeenCalledTimes(0);
     expect(events._eventHandlers[eventName].length).toBe(0);
     expect(events).toMatchSnapshot();
   });
