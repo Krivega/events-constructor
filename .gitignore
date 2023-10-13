@@ -102,3 +102,33 @@ dist
 
 # TernJS port file
 .tern-port
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+node_modules
+/coverage
+dist
+dist-ssr
+*.local
+tsconfig.tsbuildinfo
+
+# Editor directories and files
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+/.eslintcache
+/junit.xml
+/*.tsbuildinfo
+/tsconfig.*.json
+!/tsconfig.base.json
+*.diff.png
+
