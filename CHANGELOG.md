@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/Krivega/events-constructor/compare/v1.2.0...v1.2.1) (2023-10-13)
+
+### Bug Fixes
+
+- types ([bc2a8e2](https://github.com/Krivega/events-constructor/commit/bc2a8e24cda228355ef303709255f2e90a3574eb))
+
 ## [1.2.0](https://github.com/Krivega/events-constructor/compare/v1.1.4...v1.2.0) (2022-05-17)
 
 ### Features
