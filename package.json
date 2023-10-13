@@ -39,7 +39,7 @@
     "release": "standard-version && yarn release:publish",
     "release:major": "standard-version --release-as major && yarn release:publish",
     "release:pre": "standard-version --prerelease && yarn release:publish",
-    "release:publish": "git push --follow-tags origin main",
+    "release:publish": "git push --follow-tags origin master",
     "test": "jest --watch",
     "test:ci": "cross-env CI=true jest --passWithNoTests",
     "test:coverage": "yarn test:ci --coverage --reporters=default --reporters=jest-junit"
@@ -81,5 +81,6 @@
     "vite-plugin-dts": "^3.6.0",
     "vite-tsconfig-paths": "^4.2.1"
   },
+  "peerDependencies": {},
   "main:src": "src/index.ts"
 }
