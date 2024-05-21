@@ -1,3 +1,4 @@
+/// <reference types="jest" />
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/init-declarations */
 import Events from '../index';
