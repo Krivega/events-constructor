@@ -110,6 +110,14 @@ class Events<T extends Readonly<string[]> = string[]> {
     this.active = false;
   }
 
+  public hasHandlers(eventName: T[number]): boolean {
+    try {
+      return this.getHandlers(eventName).length > 0;
+    } catch {
+      return false;
+    }
+  }
+  
   private getHandlers<U = unknown>(eventName: T[number]) {
     const handlers = this.eventHandlers[eventName];
 
