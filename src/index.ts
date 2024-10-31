@@ -111,11 +111,7 @@ class Events<T extends Readonly<string[]> = string[]> {
   }
 
   public hasHandlers(eventName: T[number]): boolean {
-    try {
-      return this.getHandlers(eventName).length > 0;
-    } catch {
-      return false;
-    }
+    return this.getHandlers(eventName).length > 0; 
   }
   
   private getHandlers<U = unknown>(eventName: T[number]) {
