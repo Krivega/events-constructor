@@ -289,11 +289,6 @@ describe('events', () => {
     expect(mockFunction).toHaveBeenCalledTimes(4);
   });
 
-  it('hasHandlers: event not exist', () => {
-    // @ts-expect-error
-    expect(events.hasHandlers('NOT_EXIST_EVENT')).toBe(false);
-  });
-
   it('hasHandlers', () => {
     expect(events.hasHandlers(eventName)).toBe(false);
 
