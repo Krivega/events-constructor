@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-parameters */
 type THandler<T = unknown> = (data: T) => void;
 type TTrigger<T = unknown> = (data: T) => void;
 type THandlerRace<T = unknown> = (data: T, eventName: string) => void;
@@ -10,7 +11,7 @@ const errorNotSupported = <T extends string = string>(eventName: T): Error => {
   return error;
 };
 
-class Events<T extends Readonly<string[]> = string[]> {
+class Events<T extends readonly string[] = string[]> {
   public triggers: TTriggers<T[number]>;
 
   private active = true;
@@ -111,9 +112,9 @@ class Events<T extends Readonly<string[]> = string[]> {
   }
 
   public hasHandlers(eventName: T[number]): boolean {
-    return this.getHandlers(eventName).length > 0; 
+    return this.getHandlers(eventName).length > 0;
   }
-  
+
   private getHandlers<U = unknown>(eventName: T[number]) {
     const handlers = this.eventHandlers[eventName];
 
