@@ -1,6 +1,6 @@
 {
   "name": "events-constructor",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Class for emitting events",
   "bugs": {
     "url": "https://github.com/Krivega/events-constructor/issues"
