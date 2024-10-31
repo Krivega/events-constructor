@@ -288,4 +288,16 @@ describe('events', () => {
 
     expect(mockFunction).toHaveBeenCalledTimes(4);
   });
+
+  it('hasHandlers', () => {
+    expect(events.hasHandlers(eventName)).toBe(false);
+
+    events.on(eventName, mockFunction);
+
+    expect(events.hasHandlers(eventName)).toBe(true);
+
+    events.off(eventName, mockFunction);
+
+    expect(events.hasHandlers(eventName)).toBe(false);
+  });
 });
