@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/Krivega/events-constructor/compare/v1.3.0...v1.4.0) (2025-07-29)
+
+### Features
+
+- add validation uniq names of events ([3c5b12c](https://github.com/Krivega/events-constructor/commit/3c5b12c01dab4484fc305eb7c31807f42885b0e5))
+
 ## [1.3.0](https://github.com/Krivega/events-constructor/compare/v1.2.5...v1.3.0) (2024-10-31)
 
 ### [1.2.5](https://github.com/Krivega/events-constructor/compare/v1.2.4...v1.2.5) (2024-10-31)
