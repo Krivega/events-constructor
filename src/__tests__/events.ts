@@ -20,6 +20,15 @@ describe('events', () => {
     argument = {};
   });
 
+  it('constructor: error with duplicate event names', () => {
+    const eventNames = ['event1', 'event1'] as const;
+
+    expect(() => {
+      // eslint-disable-next-line no-new
+      new Events<typeof eventNames>(eventNames);
+    }).toThrow(new Error('Event names must be unique'));
+  });
+
   it('on', () => {
     events.on(eventName, mockFunction);
 

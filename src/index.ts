@@ -11,6 +11,14 @@ const errorNotSupported = <T extends string = string>(eventName: T): Error => {
   return error;
 };
 
+const validateEventNames = <T extends readonly string[]>(eventsNames: T) => {
+  const set = new Set(eventsNames);
+
+  if (set.size !== eventsNames.length) {
+    throw new Error('Event names must be unique');
+  }
+};
+
 class Events<T extends readonly string[] = string[]> {
   public triggers: TTriggers<T[number]>;
 
@@ -18,17 +26,20 @@ class Events<T extends readonly string[] = string[]> {
 
   private eventHandlers: TEventHandlers<T[number]>;
 
-  private readonly events: T;
+  private readonly eventNames: T;
 
   private readonly debug?: (error: unknown) => void;
 
-  public constructor(events: T, { debug }: { debug?: (error: unknown) => void } = {}) {
-    this.events = events;
+  public constructor(eventNames: T, { debug }: { debug?: (error: unknown) => void } = {}) {
+    validateEventNames(eventNames);
+
+    this.eventNames = eventNames;
     this.debug = debug;
 
     this.eventHandlers = {} as TEventHandlers<T[number]>;
     this.triggers = {} as TTriggers<T[number]>;
-    this.initEventHandlers(this.events);
+
+    this.initEventHandlers(this.eventNames);
   }
 
   public on<U = unknown>(eventName: T[number], handler: THandler<U>) {
@@ -90,6 +101,10 @@ class Events<T extends readonly string[] = string[]> {
     trigger(data);
   }
 
+  public emit<U = unknown>(eventName: T[number], data: U) {
+    this.trigger(eventName, data);
+  }
+
   public eachTriggers(handler: (trigger: TTrigger, eventName: T[number]) => void) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const triggersEntries: [T[number], TTrigger][] = Object.entries(this.triggers);
@@ -100,7 +115,7 @@ class Events<T extends readonly string[] = string[]> {
   }
 
   public removeEventHandlers() {
-    this.initEventHandlers(this.events);
+    this.initEventHandlers(this.eventNames);
   }
 
   public activate() {
@@ -137,10 +152,8 @@ class Events<T extends readonly string[] = string[]> {
 
   private initEventHandlers(eventsNames: T) {
     for (const eventName of eventsNames) {
-      // @ts-expect-error
-      this.eventHandlers[eventName] = [] as THandler[];
-      // @ts-expect-error
-      this.triggers[eventName] = this.resolveTrigger(eventName);
+      this.eventHandlers[eventName as T[number]] = [] as THandler[];
+      this.triggers[eventName as T[number]] = this.resolveTrigger(eventName);
     }
   }
 
