@@ -33,7 +33,7 @@ describe('events', () => {
     events.on(eventName, mockFunction);
 
     // @ts-expect-error
-    expect(events.eventHandlers[eventName][0]).toBe(mockFunction);
+    expect([...events.eventHandlers[eventName]][0]).toBe(mockFunction);
 
     events.trigger(eventName, argument);
 
@@ -50,7 +50,7 @@ describe('events', () => {
     unsubscribe();
 
     // @ts-expect-error
-    expect(events.eventHandlers[eventName].length).toBe(0);
+    expect(events.eventHandlers[eventName].size).toBe(0);
 
     events.trigger(eventName, argument);
 
@@ -61,7 +61,7 @@ describe('events', () => {
     events.onceRace([eventName0, eventName], mockFunction);
 
     // @ts-expect-error
-    expect(events.eventHandlers[eventName].length).toBe(1);
+    expect(events.eventHandlers[eventName].size).toBe(1);
 
     const argument0 = 'arg0';
 
@@ -82,7 +82,7 @@ describe('events', () => {
     unsubscribe();
 
     // @ts-expect-error
-    expect(events.eventHandlers[eventName].length).toBe(0);
+    expect(events.eventHandlers[eventName].size).toBe(0);
 
     events.trigger(eventName, argument);
 
@@ -111,12 +111,12 @@ describe('events', () => {
     events.on(eventName, mockFunction);
 
     // @ts-expect-error
-    expect(events.eventHandlers[eventName].length).toBe(3);
+    expect(events.eventHandlers[eventName].size).toBe(3);
 
     events.trigger(eventName, argument);
 
     // @ts-expect-error
-    expect(events.eventHandlers[eventName].length).toBe(1);
+    expect(events.eventHandlers[eventName].size).toBe(1);
     expect(mockTriggerOnceFunction).toHaveBeenCalledTimes(1);
     expect(mockTriggerOnceFunction2).toHaveBeenCalledTimes(1);
 
@@ -126,9 +126,9 @@ describe('events', () => {
     expect(mockTriggerOnceFunction2).toHaveBeenCalledTimes(1);
     expect(mockFunction).toHaveBeenCalledTimes(2);
     // @ts-expect-error
-    expect(events.eventHandlers[eventName].length).toBe(1);
+    expect(events.eventHandlers[eventName].size).toBe(1);
     // @ts-expect-error
-    expect(events.eventHandlers[eventName][0]).toBe(mockFunction);
+    expect([...events.eventHandlers[eventName]][0]).toBe(mockFunction);
   });
 
   it('once: returns unsubscribe', () => {
@@ -137,7 +137,7 @@ describe('events', () => {
     unsubscribe();
 
     // @ts-expect-error
-    expect(events.eventHandlers[eventName].length).toBe(0);
+    expect(events.eventHandlers[eventName].size).toBe(0);
 
     events.trigger(eventName, argument);
 
@@ -166,12 +166,12 @@ describe('events', () => {
     events.on(eventName, mockFunction);
 
     // @ts-expect-error
-    expect(events.eventHandlers[eventName].length).toBe(3);
+    expect(events.eventHandlers[eventName].size).toBe(3);
 
     events.trigger(eventName, argument);
 
     // @ts-expect-error
-    expect(events.eventHandlers[eventName].length).toBe(1);
+    expect(events.eventHandlers[eventName].size).toBe(1);
     expect(debug).toHaveBeenCalledTimes(1);
     expect(mockTriggerOnceFunction).toHaveBeenCalledTimes(1);
     expect(mockTriggerOnceFunction2).toHaveBeenCalledTimes(1);
@@ -182,9 +182,9 @@ describe('events', () => {
     expect(mockTriggerOnceFunction2).toHaveBeenCalledTimes(1);
     expect(mockFunction).toHaveBeenCalledTimes(2);
     // @ts-expect-error
-    expect(events.eventHandlers[eventName].length).toBe(1);
+    expect(events.eventHandlers[eventName].size).toBe(1);
     // @ts-expect-error
-    expect(events.eventHandlers[eventName][0]).toBe(mockFunction);
+    expect([...events.eventHandlers[eventName]][0]).toBe(mockFunction);
   });
 
   it('off', () => {
@@ -194,20 +194,29 @@ describe('events', () => {
 
     expect(mockFunction).toHaveBeenCalledTimes(0);
     // @ts-expect-error
-    expect(events.eventHandlers[eventName].length).toBe(0);
+    expect(events.eventHandlers[eventName].size).toBe(0);
   });
 
   it('removeEventHandlers', () => {
     events.on(eventName, mockFunction);
     events.removeEventHandlers();
     // @ts-expect-error
-    expect(events.eventHandlers[eventName].length).toBe(0);
+    expect(events.eventHandlers[eventName].size).toBe(0);
   });
 
   it('trigger', () => {
     events.on(eventName, mockFunction);
     events.trigger(eventName, argument);
     events.trigger(eventName, argument);
+
+    expect(mockFunction).toHaveBeenCalledTimes(2);
+    expect(mockFunction).toHaveBeenCalledWith(argument);
+  });
+
+  it('emit', () => {
+    events.on(eventName, mockFunction);
+    events.emit(eventName, argument);
+    events.emit(eventName, argument);
 
     expect(mockFunction).toHaveBeenCalledTimes(2);
     expect(mockFunction).toHaveBeenCalledWith(argument);
@@ -298,6 +307,49 @@ describe('events', () => {
     expect(mockFunction).toHaveBeenCalledTimes(4);
   });
 
+  it('offAll by event', () => {
+    const handler1 = jest.fn();
+    const handler2 = jest.fn();
+
+    events.on(eventName, handler1);
+    events.on(eventName0, handler2);
+
+    // Удаляем подписки только для eventName
+    events.offAll(eventName);
+
+    events.trigger(eventName, argument);
+    events.trigger(eventName0, argument);
+
+    expect(handler1).toHaveBeenCalledTimes(0);
+    expect(handler2).toHaveBeenCalledTimes(1);
+
+    // @ts-expect-error
+    expect(events.eventHandlers[eventName].size).toBe(0);
+    // @ts-expect-error
+    expect(events.eventHandlers[eventName0].size).toBe(1);
+  });
+
+  it('offAll all events', () => {
+    const handler1 = jest.fn();
+    const handler2 = jest.fn();
+
+    events.on(eventName, handler1);
+    events.on(eventName0, handler2);
+
+    events.offAll();
+
+    events.trigger(eventName, argument);
+    events.trigger(eventName0, argument);
+
+    expect(handler1).toHaveBeenCalledTimes(0);
+    expect(handler2).toHaveBeenCalledTimes(0);
+
+    // @ts-expect-error
+    expect(events.eventHandlers[eventName].size).toBe(0);
+    // @ts-expect-error
+    expect(events.eventHandlers[eventName0].size).toBe(0);
+  });
+
   it('hasHandlers', () => {
     expect(events.hasHandlers(eventName)).toBe(false);
 
@@ -308,5 +360,45 @@ describe('events', () => {
     events.off(eventName, mockFunction);
 
     expect(events.hasHandlers(eventName)).toBe(false);
+  });
+
+  it('destroy', () => {
+    const handler1 = jest.fn();
+    const handler2 = jest.fn();
+
+    events.on(eventName, handler1);
+    events.on(eventName0, handler2);
+
+    events.destroy();
+
+    events.trigger(eventName, argument);
+    events.trigger(eventName0, argument);
+
+    expect(handler1).toHaveBeenCalledTimes(0);
+    expect(handler2).toHaveBeenCalledTimes(0);
+
+    // @ts-expect-error
+    expect(events.triggers[eventName]).toBeUndefined();
+    // @ts-expect-error
+    expect(events.triggers[eventName0]).toBeUndefined();
+  });
+
+  it('trigger vs off race condition', () => {
+    const handler = jest.fn();
+    const unsubscribeOnTrigger = jest.fn(() => {
+      events.off(eventName, handler);
+    });
+
+    // Subscribe the once handler first so that it executes before the regular handler.
+    events.once(eventName, unsubscribeOnTrigger);
+    // Subscribe the regular handler after – it will be removed in the middle of trigger execution.
+    events.on(eventName, handler);
+
+    events.trigger(eventName, argument);
+
+    expect(unsubscribeOnTrigger).toHaveBeenCalledTimes(1);
+    // We expect the second handler NOT to be called because it was removed during trigger execution.
+    // The current implementation still calls it, revealing the race condition.
+    expect(handler).toHaveBeenCalledTimes(0);
   });
 });

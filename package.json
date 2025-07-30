@@ -51,9 +51,10 @@
     "release:minor": "standard-version --release-as minor && yarn release:publish",
     "release:pre": "standard-version --prerelease && yarn release:publish",
     "release:publish": "git push --follow-tags origin master && npm publish",
-    "test": "jest --watch",
+    "test": "jest",
     "test:ci": "cross-env CI=true jest --passWithNoTests",
-    "test:coverage": "yarn test:ci --coverage --reporters=default --reporters=jest-junit"
+    "test:coverage": "yarn test:ci --coverage --reporters=default --reporters=jest-junit",
+    "test:watch": "jest --watch"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.26.0",

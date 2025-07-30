@@ -1,8 +1,9 @@
+/* eslint-disable valid-jsdoc */
 /* eslint-disable @typescript-eslint/no-unnecessary-type-parameters */
 type THandler<T = unknown> = (data: T) => void;
 type TTrigger<T = unknown> = (data: T) => void;
 type THandlerRace<T = unknown> = (data: T, eventName: string) => void;
-type TEventHandlers<T extends string, U = unknown> = Record<T, THandler<U>[] | undefined>;
+type TEventHandlers<T extends string, U = unknown> = Record<T, Set<THandler<U>> | undefined>;
 type TTriggers<T extends string, U = unknown> = Record<T, TTrigger<U> | undefined>;
 
 const errorNotSupported = <T extends string = string>(eventName: T): Error => {
@@ -45,7 +46,7 @@ class Events<T extends readonly string[] = string[]> {
   public on<U = unknown>(eventName: T[number], handler: THandler<U>) {
     const handlers = this.getHandlers<U>(eventName);
 
-    handlers.push(handler);
+    handlers.add(handler);
 
     return () => {
       this.off(eventName, handler);
@@ -87,16 +88,57 @@ class Events<T extends readonly string[] = string[]> {
   }
 
   public off<U = unknown>(eventName: T[number], handler: THandler<U>) {
-    const handlers = this.getHandlers<U>(eventName);
+    const handlers = this.getHandlers(eventName);
 
-    // @ts-expect-error
-    this.eventHandlers[eventName] = handlers.filter((item) => {
-      return item !== handler;
-    });
+    handlers.delete(handler as THandler);
+  }
+
+  /**
+   * Remove all handlers. If eventName is provided – only handlers of that
+   * event will be removed, otherwise handlers of all events will be cleared.
+   */
+  public offAll(eventName?: T[number]) {
+    if (eventName !== undefined) {
+      this.getHandlers(eventName).clear();
+
+      return;
+    }
+
+    for (const name of this.eventNames) {
+      this.getHandlers(name).clear();
+    }
+  }
+
+  /**
+   * Deactivate emitter and remove all references to handlers and triggers.
+   * After destroy the instance becomes inert – любые вызовы `on/trigger` не дадут эффекта.
+   */
+  public destroy() {
+    // Отключаем активность
+    this.deactivate();
+
+    // Очищаем все обработчики
+    this.offAll();
+
+    // Удаляем ссылки на триггеры, чтобы экземпляр полностью освободил обработчики
+    for (const name of this.eventNames) {
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+      delete this.triggers[name as T[number]];
+    }
   }
 
   public trigger<U = unknown>(eventName: T[number], data: U) {
-    const trigger = this.getTrigger<U>(eventName);
+    const trigger = this.triggers[eventName] as TTrigger<U> | undefined;
+
+    if (!trigger) {
+      // Неизвестное событие – сохраняем старое поведение и бросаем ошибку
+      if (!this.eventNames.includes(eventName)) {
+        throw errorNotSupported(eventName);
+      }
+
+      // Событие известно, но экземпляр уничтожен → молча игнорируем
+      return;
+    }
 
     trigger(data);
   }
@@ -127,7 +169,7 @@ class Events<T extends readonly string[] = string[]> {
   }
 
   public hasHandlers(eventName: T[number]): boolean {
-    return this.getHandlers(eventName).length > 0;
+    return this.getHandlers(eventName).size > 0;
   }
 
   private getHandlers<U = unknown>(eventName: T[number]) {
@@ -137,22 +179,12 @@ class Events<T extends readonly string[] = string[]> {
       throw errorNotSupported(eventName);
     }
 
-    return handlers as THandler<U>[];
-  }
-
-  private getTrigger<U = unknown>(eventName: T[number]) {
-    const trigger = this.triggers[eventName];
-
-    if (!trigger) {
-      throw errorNotSupported(eventName);
-    }
-
-    return this.triggers[eventName] as TTrigger<U>;
+    return handlers as Set<THandler<U>>;
   }
 
   private initEventHandlers(eventsNames: T) {
     for (const eventName of eventsNames) {
-      this.eventHandlers[eventName as T[number]] = [] as THandler[];
+      this.eventHandlers[eventName as T[number]] = new Set<THandler>();
       this.triggers[eventName as T[number]] = this.resolveTrigger(eventName);
     }
   }
@@ -163,9 +195,20 @@ class Events<T extends readonly string[] = string[]> {
         return;
       }
 
-      const eventHandlers: THandler[] = this.getHandlers(eventName);
+      // Создаём снимок текущих обработчиков. Он позволит корректно обходить
+      // массив, даже если во время обхода обработчики будут добавляться или
+      // удаляться.
+      const handlersReference = this.getHandlers(eventName);
+      const snapshotHandlers: THandler[] = [...handlersReference];
 
-      for (const eventHandler of eventHandlers) {
+      for (const eventHandler of snapshotHandlers) {
+        // Если обработчик был удалён до того, как настала его очередь —
+        // пропускаем вызов.
+        if (!handlersReference.has(eventHandler)) {
+          // eslint-disable-next-line no-continue
+          continue;
+        }
+
         try {
           eventHandler(data);
         } catch (error) {
