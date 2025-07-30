@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/Krivega/events-constructor/compare/v1.4.0...v1.5.0) (2025-07-30)
+
+### Features
+
+- add error validateEventNames ([092ece7](https://github.com/Krivega/events-constructor/commit/092ece71d60312898c4bea507ee7cde3d90a1530))
+- add maxListeners ([aa89032](https://github.com/Krivega/events-constructor/commit/aa8903223ff3b526abf32874a778610f19b9aa2b))
+- add offAll, destroy. fix trigger vs off race condition ([b9faff2](https://github.com/Krivega/events-constructor/commit/b9faff2c02a6557eef882874913980b4b42e1f9a))
+
 ## [1.4.0](https://github.com/Krivega/events-constructor/compare/v1.3.0...v1.4.0) (2025-07-29)
 
 ### Features
