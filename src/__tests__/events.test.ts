@@ -29,6 +29,22 @@ describe('events', () => {
     }).toThrow(new Error('Event names must be unique'));
   });
 
+  it('maxListeners exceeded', () => {
+    const limit = 1;
+    const localEvents = new Events(initEventNames, { maxListeners: limit });
+
+    localEvents.on(eventName, jest.fn());
+
+    expect(() => {
+      localEvents.on(eventName, jest.fn());
+    }).toThrow(new Error(`Max listeners (${limit}) for event ${eventName} exceeded`));
+
+    // Добавление слушателя к другому событию допускается
+    expect(() => {
+      localEvents.on(eventName0, jest.fn());
+    }).not.toThrow();
+  });
+
   it('on', () => {
     events.on(eventName, mockFunction);
 
@@ -377,9 +393,7 @@ describe('events', () => {
     expect(handler1).toHaveBeenCalledTimes(0);
     expect(handler2).toHaveBeenCalledTimes(0);
 
-    // @ts-expect-error
     expect(events.triggers[eventName]).toBeUndefined();
-    // @ts-expect-error
     expect(events.triggers[eventName0]).toBeUndefined();
   });
 

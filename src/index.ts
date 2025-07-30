@@ -31,11 +31,17 @@ class Events<T extends readonly string[] = string[]> {
 
   private readonly debug?: (error: unknown) => void;
 
-  public constructor(eventNames: T, { debug }: { debug?: (error: unknown) => void } = {}) {
+  private readonly maxListeners?: number;
+
+  public constructor(
+    eventNames: T,
+    { debug, maxListeners }: { debug?: (error: unknown) => void; maxListeners?: number } = {},
+  ) {
     validateEventNames(eventNames);
 
     this.eventNames = eventNames;
     this.debug = debug;
+    this.maxListeners = maxListeners;
 
     this.eventHandlers = {} as TEventHandlers<T[number]>;
     this.triggers = {} as TTriggers<T[number]>;
@@ -45,6 +51,10 @@ class Events<T extends readonly string[] = string[]> {
 
   public on<U = unknown>(eventName: T[number], handler: THandler<U>) {
     const handlers = this.getHandlers<U>(eventName);
+
+    if (this.maxListeners !== undefined && handlers.size >= this.maxListeners) {
+      throw new Error(`Max listeners (${this.maxListeners}) for event ${eventName} exceeded`);
+    }
 
     handlers.add(handler);
 
