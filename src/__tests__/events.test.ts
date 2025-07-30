@@ -26,7 +26,7 @@ describe('events', () => {
     expect(() => {
       // eslint-disable-next-line no-new
       new Events<typeof eventNames>(eventNames);
-    }).toThrow(new Error('Event names must be unique'));
+    }).toThrow(new Error('Event names must be unique: event1'));
   });
 
   it('maxListeners exceeded', () => {

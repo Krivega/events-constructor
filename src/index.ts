@@ -13,10 +13,19 @@ const errorNotSupported = <T extends string = string>(eventName: T): Error => {
 };
 
 const validateEventNames = <T extends readonly string[]>(eventsNames: T) => {
-  const set = new Set(eventsNames);
+  const seen = new Set<string>();
+  const duplicates = new Set<string>();
 
-  if (set.size !== eventsNames.length) {
-    throw new Error('Event names must be unique');
+  for (const name of eventsNames) {
+    if (seen.has(name)) {
+      duplicates.add(name);
+    }
+
+    seen.add(name);
+  }
+
+  if (duplicates.size > 0) {
+    throw new Error(`Event names must be unique: ${[...duplicates].join(', ')}`);
   }
 };
 
@@ -153,6 +162,7 @@ class Events<T extends readonly string[] = string[]> {
     trigger(data);
   }
 
+  // Alias for trigger to match Node.js EventEmitter API
   public emit<U = unknown>(eventName: T[number], data: U) {
     this.trigger(eventName, data);
   }
