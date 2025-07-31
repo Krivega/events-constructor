@@ -11,6 +11,7 @@ const jestConfig: JestConfigWithTsJest = {
     '!**/__tests-utils__/**',
     '!**/__fixtures__/**',
     '!src/**/*.d.ts',
+    '!src/**/index.ts',
     '!src/**/types.ts',
     '!src/**/typings.ts',
   ],
