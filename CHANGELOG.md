@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/Krivega/events-constructor/compare/v1.5.0...v2.0.0) (2025-07-31)
+
+### ⚠ BREAKING CHANGES
+
+- add TypedEvents
+
+### Features
+
+- add TypedEvents ([21ec921](https://github.com/Krivega/events-constructor/commit/21ec9219fcb15b0fe858f6d03d65f7058b1314f1))
+
 ## [1.5.0](https://github.com/Krivega/events-constructor/compare/v1.4.0...v1.5.0) (2025-07-30)
 
 ### Features
