@@ -195,7 +195,7 @@ describe('TypedEvents', () => {
         const raceHandler = jest.fn();
         const regularHandler = jest.fn();
 
-        // Set up race handler for userLoaded event
+        // Set up onRace handler for userLoaded event
         events.onceRace(['userLoaded'], raceHandler);
         events.on('userLoaded', regularHandler);
 
@@ -204,11 +204,11 @@ describe('TypedEvents', () => {
         // Trigger the event
         events.trigger('userLoaded', payload);
 
-        // Verify race handler was called with correct payload and event name
+        // Verify onRace handler was called with correct payload and event name
         expect(raceHandler).toHaveBeenCalledWith(payload, 'userLoaded');
         expect(regularHandler).toHaveBeenCalledWith(payload);
 
-        // Trigger again - race handler should not be called
+        // Trigger again - onRace handler should not be called
         events.trigger('userLoaded', { id: 'test2' });
 
         expect(raceHandler).toHaveBeenCalledTimes(1);
@@ -220,7 +220,7 @@ describe('TypedEvents', () => {
         const userLoadedHandler = jest.fn();
         const logoutHandler = jest.fn();
 
-        // Set up race handler for multiple events
+        // Set up onRace handler for multiple events
         events.onceRace(['userLoaded', 'logout'], raceHandler);
         events.on('userLoaded', userLoadedHandler);
         events.on('logout', logoutHandler);
@@ -228,12 +228,12 @@ describe('TypedEvents', () => {
         // Trigger userLoaded event first
         events.trigger('userLoaded', { id: 'test' });
 
-        // Verify race handler was called with userLoaded event
+        // Verify onRace handler was called with userLoaded event
         expect(raceHandler).toHaveBeenCalledWith({ id: 'test' }, 'userLoaded');
         expect(userLoadedHandler).toHaveBeenCalledWith({ id: 'test' });
         expect(logoutHandler).toHaveBeenCalledTimes(0);
 
-        // Trigger logout event - race handler should not be called again
+        // Trigger logout event - onRace handler should not be called again
         events.trigger('logout');
 
         expect(raceHandler).toHaveBeenCalledTimes(1);
@@ -245,7 +245,7 @@ describe('TypedEvents', () => {
         const userLoadedHandler = jest.fn();
         const logoutHandler = jest.fn();
 
-        // Set up race handler for multiple events
+        // Set up onRace handler for multiple events
         events.onceRace(['userLoaded', 'logout'], raceHandler);
         events.on('userLoaded', userLoadedHandler);
         events.on('logout', logoutHandler);
@@ -253,12 +253,12 @@ describe('TypedEvents', () => {
         // Trigger logout event first
         events.trigger('logout');
 
-        // Verify race handler was called with logout event
+        // Verify onRace handler was called with logout event
         expect(raceHandler).toHaveBeenCalledWith(undefined, 'logout');
         expect(logoutHandler).toHaveBeenCalledWith(undefined);
         expect(userLoadedHandler).toHaveBeenCalledTimes(0);
 
-        // Trigger userLoaded event - race handler should not be called again
+        // Trigger userLoaded event - onRace handler should not be called again
         events.trigger('userLoaded', { id: 'test' });
 
         expect(raceHandler).toHaveBeenCalledTimes(1);
@@ -269,11 +269,11 @@ describe('TypedEvents', () => {
         const raceHandler = jest.fn();
         const regularHandler = jest.fn();
 
-        // Set up race handler
+        // Set up onRace handler
         events.onceRace(['userLoaded'], raceHandler);
         events.on('userLoaded', regularHandler);
 
-        // Get unsubscribe function from another race handler
+        // Get unsubscribe function from another onRace handler
         const unsubscribe = events.onceRace(['userLoaded'], jest.fn());
 
         // Trigger event
@@ -289,17 +289,17 @@ describe('TypedEvents', () => {
         // Trigger again
         events.trigger('userLoaded', { id: 'test2' });
 
-        // Verify race handler was not called again
+        // Verify onRace handler was not called again
         expect(raceHandler).toHaveBeenCalledTimes(1);
         expect(regularHandler).toHaveBeenCalledTimes(2);
       });
 
-      it('should handle multiple race handlers for same events', () => {
+      it('should handle multiple onRace handlers for same events', () => {
         const raceHandler1 = jest.fn();
         const raceHandler2 = jest.fn();
         const regularHandler = jest.fn();
 
-        // Set up multiple race handlers
+        // Set up multiple onRace handlers
         events.onceRace(['userLoaded', 'logout'], raceHandler1);
         events.onceRace(['userLoaded', 'logout'], raceHandler2);
         events.on('userLoaded', regularHandler);
@@ -309,12 +309,12 @@ describe('TypedEvents', () => {
         // Trigger the event
         events.trigger('userLoaded', payload);
 
-        // Verify all race handlers were called
+        // Verify all onRace handlers were called
         expect(raceHandler1).toHaveBeenCalledWith(payload, 'userLoaded');
         expect(raceHandler2).toHaveBeenCalledWith(payload, 'userLoaded');
         expect(regularHandler).toHaveBeenCalledWith(payload);
 
-        // Trigger again - race handlers should not be called
+        // Trigger again - onRace handlers should not be called
         events.trigger('userLoaded', { id: 'test2' });
 
         expect(raceHandler1).toHaveBeenCalledTimes(1);
@@ -322,40 +322,40 @@ describe('TypedEvents', () => {
         expect(regularHandler).toHaveBeenCalledTimes(2);
       });
 
-      it('should handle race handlers with different event combinations', () => {
+      it('should handle onRace handlers with different event combinations', () => {
         const raceHandler1 = jest.fn();
         const raceHandler2 = jest.fn();
 
-        // Set up race handlers for different event combinations
+        // Set up onRace handlers for different event combinations
         events.onceRace(['userLoaded'], raceHandler1);
         events.onceRace(['logout'], raceHandler2);
 
         // Trigger userLoaded event
         events.trigger('userLoaded', { id: 'test' });
 
-        // Verify only userLoaded race handler was called
+        // Verify only userLoaded onRace handler was called
         expect(raceHandler1).toHaveBeenCalledWith({ id: 'test' }, 'userLoaded');
         expect(raceHandler2).toHaveBeenCalledTimes(0);
 
         // Trigger logout event
         events.trigger('logout');
 
-        // Verify logout race handler was called
+        // Verify logout onRace handler was called
         expect(raceHandler2).toHaveBeenCalledWith(undefined, 'logout');
 
-        // Trigger userLoaded again - race handler should not be called
+        // Trigger userLoaded again - onRace handler should not be called
         events.trigger('userLoaded', { id: 'test2' });
 
         expect(raceHandler1).toHaveBeenCalledTimes(1);
         expect(raceHandler2).toHaveBeenCalledTimes(1);
       });
 
-      it('should handle race handlers with mixed payload types', () => {
+      it('should handle onRace handlers with mixed payload types', () => {
         const raceHandler = jest.fn();
         const userLoadedHandler = jest.fn();
         const logoutHandler = jest.fn();
 
-        // Set up race handler for events with different payload types
+        // Set up onRace handler for events with different payload types
         events.onceRace(['userLoaded', 'logout'], raceHandler);
         events.on('userLoaded', userLoadedHandler);
         events.on('logout', logoutHandler);
@@ -363,12 +363,12 @@ describe('TypedEvents', () => {
         // Trigger logout event (no payload)
         events.trigger('logout');
 
-        // Verify race handler was called with undefined payload
+        // Verify onRace handler was called with undefined payload
         expect(raceHandler).toHaveBeenCalledWith(undefined, 'logout');
         expect(logoutHandler).toHaveBeenCalledWith(undefined);
         expect(userLoadedHandler).toHaveBeenCalledTimes(0);
 
-        // Trigger userLoaded event (with payload) - race handler should not be called
+        // Trigger userLoaded event (with payload) - onRace handler should not be called
         events.trigger('userLoaded', { id: 'test' });
 
         expect(raceHandler).toHaveBeenCalledTimes(1);
@@ -376,13 +376,13 @@ describe('TypedEvents', () => {
       });
     });
 
-    describe('race', () => {
-      it('should handle typed race with payload events', () => {
+    describe('onRace', () => {
+      it('should handle typed onRace with payload events', () => {
         const raceHandler = jest.fn();
         const regularHandler = jest.fn();
 
-        // Set up race handler for userLoaded event
-        events.race(['userLoaded'], raceHandler);
+        // Set up onRace handler for userLoaded event
+        events.onRace(['userLoaded'], raceHandler);
         events.on('userLoaded', regularHandler);
 
         const payload = { id: 'test' };
@@ -390,11 +390,11 @@ describe('TypedEvents', () => {
         // Trigger the event
         events.trigger('userLoaded', payload);
 
-        // Verify race handler was called with correct payload and event name
+        // Verify onRace handler was called with correct payload and event name
         expect(raceHandler).toHaveBeenCalledWith(payload, 'userLoaded');
         expect(regularHandler).toHaveBeenCalledWith(payload);
 
-        // Trigger again - race handler should be called again (unlike onceRace)
+        // Trigger again - onRace handler should be called again (unlike onceRace)
         events.trigger('userLoaded', { id: 'test2' });
 
         expect(raceHandler).toHaveBeenCalledTimes(2);
@@ -402,32 +402,32 @@ describe('TypedEvents', () => {
         expect(regularHandler).toHaveBeenCalledTimes(2);
       });
 
-      it('should handle typed race with multiple events', () => {
+      it('should handle typed onRace with multiple events', () => {
         const raceHandler = jest.fn();
         const userLoadedHandler = jest.fn();
         const logoutHandler = jest.fn();
 
-        // Set up race handler for multiple events
-        events.race(['userLoaded', 'logout'], raceHandler);
+        // Set up onRace handler for multiple events
+        events.onRace(['userLoaded', 'logout'], raceHandler);
         events.on('userLoaded', userLoadedHandler);
         events.on('logout', logoutHandler);
 
         // Trigger userLoaded event first
         events.trigger('userLoaded', { id: 'test' });
 
-        // Verify race handler was called with userLoaded event
+        // Verify onRace handler was called with userLoaded event
         expect(raceHandler).toHaveBeenCalledWith({ id: 'test' }, 'userLoaded');
         expect(userLoadedHandler).toHaveBeenCalledWith({ id: 'test' });
         expect(logoutHandler).toHaveBeenCalledTimes(0);
 
-        // Trigger logout event - race handler should be called again
+        // Trigger logout event - onRace handler should be called again
         events.trigger('logout');
 
         expect(raceHandler).toHaveBeenCalledTimes(2);
         expect(raceHandler).toHaveBeenLastCalledWith(undefined, 'logout');
         expect(logoutHandler).toHaveBeenCalledWith(undefined);
 
-        // Trigger userLoaded again - race handler should be called again
+        // Trigger userLoaded again - onRace handler should be called again
         events.trigger('userLoaded', { id: 'test2' });
 
         expect(raceHandler).toHaveBeenCalledTimes(3);
@@ -435,25 +435,25 @@ describe('TypedEvents', () => {
         expect(userLoadedHandler).toHaveBeenCalledTimes(2);
       });
 
-      it('should handle typed race with logout event first', () => {
+      it('should handle typed onRace with logout event first', () => {
         const raceHandler = jest.fn();
         const userLoadedHandler = jest.fn();
         const logoutHandler = jest.fn();
 
-        // Set up race handler for multiple events
-        events.race(['userLoaded', 'logout'], raceHandler);
+        // Set up onRace handler for multiple events
+        events.onRace(['userLoaded', 'logout'], raceHandler);
         events.on('userLoaded', userLoadedHandler);
         events.on('logout', logoutHandler);
 
         // Trigger logout event first
         events.trigger('logout');
 
-        // Verify race handler was called with logout event
+        // Verify onRace handler was called with logout event
         expect(raceHandler).toHaveBeenCalledWith(undefined, 'logout');
         expect(logoutHandler).toHaveBeenCalledWith(undefined);
         expect(userLoadedHandler).toHaveBeenCalledTimes(0);
 
-        // Trigger userLoaded event - race handler should be called again
+        // Trigger userLoaded event - onRace handler should be called again
         events.trigger('userLoaded', { id: 'test' });
 
         expect(raceHandler).toHaveBeenCalledTimes(2);
@@ -465,12 +465,12 @@ describe('TypedEvents', () => {
         const raceHandler = jest.fn();
         const regularHandler = jest.fn();
 
-        // Set up race handler
-        events.race(['userLoaded'], raceHandler);
+        // Set up onRace handler
+        events.onRace(['userLoaded'], raceHandler);
         events.on('userLoaded', regularHandler);
 
-        // Get unsubscribe function from another race handler
-        const unsubscribe = events.race(['userLoaded'], jest.fn());
+        // Get unsubscribe function from another onRace handler
+        const unsubscribe = events.onRace(['userLoaded'], jest.fn());
 
         // Trigger event
         events.trigger('userLoaded', { id: 'test' });
@@ -485,20 +485,20 @@ describe('TypedEvents', () => {
         // Trigger again
         events.trigger('userLoaded', { id: 'test2' });
 
-        // Verify race handler was called again (not unsubscribed)
+        // Verify onRace handler was called again (not unsubscribed)
         expect(raceHandler).toHaveBeenCalledTimes(2);
         expect(raceHandler).toHaveBeenLastCalledWith({ id: 'test2' }, 'userLoaded');
         expect(regularHandler).toHaveBeenCalledTimes(2);
       });
 
-      it('should handle multiple race handlers for same events', () => {
+      it('should handle multiple onRace handlers for same events', () => {
         const raceHandler1 = jest.fn();
         const raceHandler2 = jest.fn();
         const regularHandler = jest.fn();
 
-        // Set up multiple race handlers
-        events.race(['userLoaded', 'logout'], raceHandler1);
-        events.race(['userLoaded', 'logout'], raceHandler2);
+        // Set up multiple onRace handlers
+        events.onRace(['userLoaded', 'logout'], raceHandler1);
+        events.onRace(['userLoaded', 'logout'], raceHandler2);
         events.on('userLoaded', regularHandler);
 
         const payload = { id: 'test' };
@@ -506,12 +506,12 @@ describe('TypedEvents', () => {
         // Trigger the event
         events.trigger('userLoaded', payload);
 
-        // Verify all race handlers were called
+        // Verify all onRace handlers were called
         expect(raceHandler1).toHaveBeenCalledWith(payload, 'userLoaded');
         expect(raceHandler2).toHaveBeenCalledWith(payload, 'userLoaded');
         expect(regularHandler).toHaveBeenCalledWith(payload);
 
-        // Trigger again - all race handlers should be called again
+        // Trigger again - all onRace handlers should be called again
         events.trigger('userLoaded', { id: 'test2' });
 
         expect(raceHandler1).toHaveBeenCalledTimes(2);
@@ -519,53 +519,53 @@ describe('TypedEvents', () => {
         expect(regularHandler).toHaveBeenCalledTimes(2);
       });
 
-      it('should handle race handlers with different event combinations', () => {
+      it('should handle onRace handlers with different event combinations', () => {
         const raceHandler1 = jest.fn();
         const raceHandler2 = jest.fn();
 
-        // Set up race handlers for different event combinations
-        events.race(['userLoaded'], raceHandler1);
-        events.race(['logout'], raceHandler2);
+        // Set up onRace handlers for different event combinations
+        events.onRace(['userLoaded'], raceHandler1);
+        events.onRace(['logout'], raceHandler2);
 
         // Trigger userLoaded event
         events.trigger('userLoaded', { id: 'test' });
 
-        // Verify only userLoaded race handler was called
+        // Verify only userLoaded onRace handler was called
         expect(raceHandler1).toHaveBeenCalledWith({ id: 'test' }, 'userLoaded');
         expect(raceHandler2).toHaveBeenCalledTimes(0);
 
         // Trigger logout event
         events.trigger('logout');
 
-        // Verify logout race handler was called
+        // Verify logout onRace handler was called
         expect(raceHandler2).toHaveBeenCalledWith(undefined, 'logout');
 
-        // Trigger userLoaded again - race handler should be called again
+        // Trigger userLoaded again - onRace handler should be called again
         events.trigger('userLoaded', { id: 'test2' });
 
         expect(raceHandler1).toHaveBeenCalledTimes(2);
         expect(raceHandler1).toHaveBeenLastCalledWith({ id: 'test2' }, 'userLoaded');
       });
 
-      it('should handle race handlers with mixed payload types', () => {
+      it('should handle onRace handlers with mixed payload types', () => {
         const raceHandler = jest.fn();
         const userLoadedHandler = jest.fn();
         const logoutHandler = jest.fn();
 
-        // Set up race handler for events with different payload types
-        events.race(['userLoaded', 'logout'], raceHandler);
+        // Set up onRace handler for events with different payload types
+        events.onRace(['userLoaded', 'logout'], raceHandler);
         events.on('userLoaded', userLoadedHandler);
         events.on('logout', logoutHandler);
 
         // Trigger logout event (no payload)
         events.trigger('logout');
 
-        // Verify race handler was called with undefined payload
+        // Verify onRace handler was called with undefined payload
         expect(raceHandler).toHaveBeenCalledWith(undefined, 'logout');
         expect(logoutHandler).toHaveBeenCalledWith(undefined);
         expect(userLoadedHandler).toHaveBeenCalledTimes(0);
 
-        // Trigger userLoaded event (with payload) - race handler should be called again
+        // Trigger userLoaded event (with payload) - onRace handler should be called again
         events.trigger('userLoaded', { id: 'test' });
 
         expect(raceHandler).toHaveBeenCalledTimes(2);

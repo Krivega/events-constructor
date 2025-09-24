@@ -44,7 +44,7 @@ class TypedEvents<
     return super.onceRace<M[K]>(eventNames, wrapped);
   }
 
-  public override race<K extends EN[number]>(
+  public override onRace<K extends EN[number]>(
     eventNames: K[],
     handler: (data: M[K], eventName: K) => void,
   ) {
@@ -52,7 +52,7 @@ class TypedEvents<
       handler(data, name as K);
     };
 
-    return super.race<M[K]>(eventNames, wrapped);
+    return super.onRace<M[K]>(eventNames, wrapped);
   }
 
   public override async wait<K extends EN[number]>(eventName: K): Promise<M[K]> {

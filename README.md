@@ -69,7 +69,7 @@ events.trigger('logout', { data: 'wrong' });
 
 ### Race Conditions
 
-Handle multiple events with race conditions:
+Handle multiple events with onRace conditions:
 
 ```js
 // onceRace - triggers only once, then automatically unsubscribes
@@ -77,8 +77,8 @@ events.onceRace(['userLogin', 'userError'], (data, eventName) => {
   console.log(`First event: ${eventName}`, data);
 });
 
-// race - triggers every time any of the events occur, stays active
-const unsubscribe = events.race(['userLogin', 'userError'], (data, eventName) => {
+// onRace - triggers every time any of the events occur, stays active
+const unsubscribe = events.onRace(['userLogin', 'userError'], (data, eventName) => {
   console.log(`Event occurred: ${eventName}`, data);
 });
 
@@ -153,12 +153,12 @@ events.onceRace(['event1', 'event2'], (data, eventName) => {
 });
 ```
 
-#### events.race
+#### events.onRace
 
 Listen for any occurrence of events from a list (stays active until manually unsubscribed)
 
 ```js
-const unsubscribe = events.race(['event1', 'event2'], (data, eventName) => {
+const unsubscribe = events.onRace(['event1', 'event2'], (data, eventName) => {
   console.log(`${eventName} was triggered with:`, data);
 });
 
@@ -290,9 +290,9 @@ events.eachTriggersTyped((trigger, eventName) => {
 });
 ```
 
-#### race (TypedEvents)
+#### onRace (TypedEvents)
 
-Strongly typed version of race with payload type safety
+Strongly typed version of onRace with payload type safety
 
 ```ts
 type EventMap = {
@@ -303,7 +303,7 @@ type EventMap = {
 
 const events = new TypedEvents<EventMap>(['userLoaded', 'userError', 'logout']);
 
-const unsubscribe = events.race(['userLoaded', 'userError'], (data, eventName) => {
+const unsubscribe = events.onRace(['userLoaded', 'userError'], (data, eventName) => {
   // TypeScript knows the exact payload type for each event
   if (eventName === 'userLoaded') {
     console.log('User loaded:', data.id, data.name); // data is { id: string; name: string }
@@ -323,7 +323,7 @@ unsubscribe();
 - **Memory Management**: Automatic cleanup of one-time listeners
 - **Error Handling**: Built-in error handling with debug support
 - **Promise Support**: Async/await support with `wait()` method
-- **Race Conditions**: Handle multiple events with `onceRace()` and `race()`
+- **Race Conditions**: Handle multiple events with `onceRace()` and `onRace()`
 - **Lifecycle Management**: Activate/deactivate events as needed
 - **Performance**: Efficient event handling with Set-based listeners
 

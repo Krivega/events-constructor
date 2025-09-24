@@ -100,7 +100,7 @@ class Events<T extends readonly string[] = string[]> {
     return unsubscribe;
   }
 
-  public race<U = unknown>(eventNames: T[number][], handler: THandlerRace<U>) {
+  public onRace<U = unknown>(eventNames: T[number][], handler: THandlerRace<U>) {
     let unsubscribes: (() => void)[] = [];
 
     const unsubscribe = () => {

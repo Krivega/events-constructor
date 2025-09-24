@@ -168,9 +168,9 @@ describe('Events', () => {
       });
     });
 
-    describe('race', () => {
-      it('race', () => {
-        events.race([eventName0, eventName1], mockFunction);
+    describe('onRace', () => {
+      it('onRace', () => {
+        events.onRace([eventName0, eventName1], mockFunction);
 
         // @ts-expect-error
         expect(events.eventHandlers[eventName0].size).toBe(1);
@@ -206,8 +206,8 @@ describe('Events', () => {
         expect(mockFunction.mock.calls[2][1]).toBe(eventName1);
       });
 
-      it('race: returns unsubscribe', () => {
-        const unsubscribe = events.race([eventName0, eventName1], mockFunction);
+      it('onRace: returns unsubscribe', () => {
+        const unsubscribe = events.onRace([eventName0, eventName1], mockFunction);
 
         unsubscribe();
 
@@ -219,14 +219,14 @@ describe('Events', () => {
         expect(mockFunction).toHaveBeenCalledTimes(0);
       });
 
-      it('race: multiple race handlers', () => {
+      it('onRace: multiple onRace handlers', () => {
         const raceHandler1 = jest.fn();
         const raceHandler2 = jest.fn();
         const regularHandler = jest.fn();
 
-        // Set up multiple race handlers
-        events.race([eventName0, eventName1], raceHandler1);
-        events.race([eventName0, eventName1], raceHandler2);
+        // Set up multiple onRace handlers
+        events.onRace([eventName0, eventName1], raceHandler1);
+        events.onRace([eventName0, eventName1], raceHandler2);
         events.on(eventName0, regularHandler);
 
         const payload = 'test-payload';
@@ -247,31 +247,31 @@ describe('Events', () => {
         expect(regularHandler).toHaveBeenCalledTimes(2);
       });
 
-      it('race: different event combinations', () => {
+      it('onRace: different event combinations', () => {
         const raceHandler1 = jest.fn();
         const raceHandler2 = jest.fn();
 
-        // Set up race handlers for different event combinations
-        events.race([eventName0], raceHandler1);
-        events.race([eventName1], raceHandler2);
+        // Set up onRace handlers for different event combinations
+        events.onRace([eventName0], raceHandler1);
+        events.onRace([eventName1], raceHandler2);
 
         // Trigger eventName0
         events.trigger(eventName0, 'test0');
 
-        // Verify only eventName0 race handler was called
+        // Verify only eventName0 onRace handler was called
         expect(raceHandler1).toHaveBeenCalledWith('test0', eventName0);
         expect(raceHandler2).toHaveBeenCalledTimes(0);
 
         // Trigger eventName1
         events.trigger(eventName1, 'test1');
 
-        // Verify eventName1 race handler was called
+        // Verify eventName1 onRace handler was called
         expect(raceHandler2).toHaveBeenCalledWith('test1', eventName1);
 
         // Trigger eventName0 again
         events.trigger(eventName0, 'test0-again');
 
-        // Verify eventName0 race handler was called again
+        // Verify eventName0 onRace handler was called again
         expect(raceHandler1).toHaveBeenCalledTimes(2);
         expect(raceHandler1).toHaveBeenLastCalledWith('test0-again', eventName0);
       });
@@ -543,8 +543,8 @@ describe('Events', () => {
       });
     });
 
-    describe('race conditions', () => {
-      it('trigger vs off race condition', () => {
+    describe('onRace conditions', () => {
+      it('trigger vs off onRace condition', () => {
         const handler = jest.fn();
         const unsubscribeOnTrigger = jest.fn(() => {
           events.off(eventName0, handler);
@@ -559,7 +559,7 @@ describe('Events', () => {
 
         expect(unsubscribeOnTrigger).toHaveBeenCalledTimes(1);
         // We expect the second handler NOT to be called because it was removed during trigger execution.
-        // The current implementation still calls it, revealing the race condition.
+        // The current implementation still calls it, revealing the onRace condition.
         expect(handler).toHaveBeenCalledTimes(0);
       });
     });
