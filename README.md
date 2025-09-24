@@ -67,6 +67,25 @@ events.trigger('logout');
 events.trigger('logout', { data: 'wrong' });
 ```
 
+### Race Conditions
+
+Handle multiple events with race conditions:
+
+```js
+// onceRace - triggers only once, then automatically unsubscribes
+events.onceRace(['userLogin', 'userError'], (data, eventName) => {
+  console.log(`First event: ${eventName}`, data);
+});
+
+// race - triggers every time any of the events occur, stays active
+const unsubscribe = events.race(['userLogin', 'userError'], (data, eventName) => {
+  console.log(`Event occurred: ${eventName}`, data);
+});
+
+// Manually unsubscribe when no longer needed
+unsubscribe();
+```
+
 ## API
 
 ### Events (Base Class)
@@ -126,12 +145,25 @@ console.log('Event triggered with:', data);
 
 #### events.onceRace
 
-Listen for the first occurrence of any event from a list
+Listen for the first occurrence of any event from a list (automatically unsubscribes after first trigger)
 
 ```js
 events.onceRace(['event1', 'event2'], (data, eventName) => {
   console.log(`${eventName} was triggered first with:`, data);
 });
+```
+
+#### events.race
+
+Listen for any occurrence of events from a list (stays active until manually unsubscribed)
+
+```js
+const unsubscribe = events.race(['event1', 'event2'], (data, eventName) => {
+  console.log(`${eventName} was triggered with:`, data);
+});
+
+// Unsubscribe when no longer needed
+unsubscribe();
 ```
 
 #### events.removeEventHandlers
@@ -258,6 +290,32 @@ events.eachTriggersTyped((trigger, eventName) => {
 });
 ```
 
+#### race (TypedEvents)
+
+Strongly typed version of race with payload type safety
+
+```ts
+type EventMap = {
+  userLoaded: { id: string; name: string };
+  userError: { error: string };
+  logout: never;
+};
+
+const events = new TypedEvents<EventMap>(['userLoaded', 'userError', 'logout']);
+
+const unsubscribe = events.race(['userLoaded', 'userError'], (data, eventName) => {
+  // TypeScript knows the exact payload type for each event
+  if (eventName === 'userLoaded') {
+    console.log('User loaded:', data.id, data.name); // data is { id: string; name: string }
+  } else if (eventName === 'userError') {
+    console.log('Error:', data.error); // data is { error: string }
+  }
+});
+
+// Unsubscribe when no longer needed
+unsubscribe();
+```
+
 ## Features
 
 - **Type Safety**: Full TypeScript support with compile-time type checking
@@ -265,7 +323,7 @@ events.eachTriggersTyped((trigger, eventName) => {
 - **Memory Management**: Automatic cleanup of one-time listeners
 - **Error Handling**: Built-in error handling with debug support
 - **Promise Support**: Async/await support with `wait()` method
-- **Race Conditions**: Handle multiple events with `onceRace()`
+- **Race Conditions**: Handle multiple events with `onceRace()` and `race()`
 - **Lifecycle Management**: Activate/deactivate events as needed
 - **Performance**: Efficient event handling with Set-based listeners
 
@@ -278,9 +336,10 @@ events.eachTriggersTyped((trigger, eventName) => {
 
 ## Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/Krivega/events-constructor/issues). You can also take a look at the [contributing guide](https://github.com/Krivega/events-constructor/blob/master/CONTRIBUTING.md).
+Contributions, issues and feature requests are welcome!  
+Feel free to check [issues page](https://github.com/Krivega/events-constructor/issues). You can also take a look at the [contributing guide](https://github.com/Krivega/events-constructor/blob/master/CONTRIBUTING.md).
 
 ## 📝 License
 
-Copyright © 2020 [Krivega Dmitriy](https://github.com/Krivega).<br />
+Copyright © 2025 [Krivega Dmitriy](https://github.com/Krivega).  
 This project is [MIT](https://github.com/Krivega/events-constructor/blob/master/LICENSE) licensed.

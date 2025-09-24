@@ -167,6 +167,115 @@ describe('Events', () => {
         expect(mockFunction).toHaveBeenCalledTimes(0);
       });
     });
+
+    describe('race', () => {
+      it('race', () => {
+        events.race([eventName0, eventName1], mockFunction);
+
+        // @ts-expect-error
+        expect(events.eventHandlers[eventName0].size).toBe(1);
+
+        const argument0 = 'arg0';
+
+        events.trigger(eventName0, argument0);
+
+        expect(mockFunction).toHaveBeenCalledTimes(1);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        expect(mockFunction.mock.calls[0][0]).toBe(argument0);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        expect(mockFunction.mock.calls[0][1]).toBe(eventName0);
+
+        // Trigger the same event again - should be called again (unlike onceRace)
+        events.trigger(eventName0, argument);
+
+        expect(mockFunction).toHaveBeenCalledTimes(2);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        expect(mockFunction.mock.calls[1][0]).toBe(argument);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        expect(mockFunction.mock.calls[1][1]).toBe(eventName0);
+
+        // Trigger the second event - should also be called
+        const argument1 = 'arg1';
+
+        events.trigger(eventName1, argument1);
+
+        expect(mockFunction).toHaveBeenCalledTimes(3);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        expect(mockFunction.mock.calls[2][0]).toBe(argument1);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        expect(mockFunction.mock.calls[2][1]).toBe(eventName1);
+      });
+
+      it('race: returns unsubscribe', () => {
+        const unsubscribe = events.race([eventName0, eventName1], mockFunction);
+
+        unsubscribe();
+
+        // @ts-expect-error
+        expect(events.eventHandlers[eventName0].size).toBe(0);
+
+        events.trigger(eventName0, argument);
+
+        expect(mockFunction).toHaveBeenCalledTimes(0);
+      });
+
+      it('race: multiple race handlers', () => {
+        const raceHandler1 = jest.fn();
+        const raceHandler2 = jest.fn();
+        const regularHandler = jest.fn();
+
+        // Set up multiple race handlers
+        events.race([eventName0, eventName1], raceHandler1);
+        events.race([eventName0, eventName1], raceHandler2);
+        events.on(eventName0, regularHandler);
+
+        const payload = 'test-payload';
+
+        // Trigger the event
+        events.trigger(eventName0, payload);
+
+        // Verify all handlers were called
+        expect(raceHandler1).toHaveBeenCalledWith(payload, eventName0);
+        expect(raceHandler2).toHaveBeenCalledWith(payload, eventName0);
+        expect(regularHandler).toHaveBeenCalledWith(payload);
+
+        // Trigger again - all handlers should be called again
+        events.trigger(eventName0, payload);
+
+        expect(raceHandler1).toHaveBeenCalledTimes(2);
+        expect(raceHandler2).toHaveBeenCalledTimes(2);
+        expect(regularHandler).toHaveBeenCalledTimes(2);
+      });
+
+      it('race: different event combinations', () => {
+        const raceHandler1 = jest.fn();
+        const raceHandler2 = jest.fn();
+
+        // Set up race handlers for different event combinations
+        events.race([eventName0], raceHandler1);
+        events.race([eventName1], raceHandler2);
+
+        // Trigger eventName0
+        events.trigger(eventName0, 'test0');
+
+        // Verify only eventName0 race handler was called
+        expect(raceHandler1).toHaveBeenCalledWith('test0', eventName0);
+        expect(raceHandler2).toHaveBeenCalledTimes(0);
+
+        // Trigger eventName1
+        events.trigger(eventName1, 'test1');
+
+        // Verify eventName1 race handler was called
+        expect(raceHandler2).toHaveBeenCalledWith('test1', eventName1);
+
+        // Trigger eventName0 again
+        events.trigger(eventName0, 'test0-again');
+
+        // Verify eventName0 race handler was called again
+        expect(raceHandler1).toHaveBeenCalledTimes(2);
+        expect(raceHandler1).toHaveBeenLastCalledWith('test0-again', eventName0);
+      });
+    });
   });
 
   describe('management methods', () => {

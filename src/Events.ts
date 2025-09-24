@@ -100,6 +100,24 @@ class Events<T extends readonly string[] = string[]> {
     return unsubscribe;
   }
 
+  public race<U = unknown>(eventNames: T[number][], handler: THandlerRace<U>) {
+    let unsubscribes: (() => void)[] = [];
+
+    const unsubscribe = () => {
+      for (const unsubscribeItem of unsubscribes) {
+        unsubscribeItem();
+      }
+    };
+
+    unsubscribes = eventNames.map((eventName: string) => {
+      return this.on(eventName, (data: U) => {
+        handler(data, eventName);
+      });
+    });
+
+    return unsubscribe;
+  }
+
   public async wait<U = unknown>(eventName: T[number]): Promise<U> {
     return new Promise<U>((resolve) => {
       this.once<U>(eventName, resolve);
