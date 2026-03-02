@@ -15,7 +15,6 @@ const jestConfig: JestConfigWithTsJest = {
     '!src/**/types.ts',
     '!src/**/typings.ts',
   ],
-  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   reporters: ['default', 'jest-junit'],
   coverageReporters: ['text', 'text-summary', 'lcov'],
   coverageDirectory: 'coverage',

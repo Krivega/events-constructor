@@ -1,5 +1,5 @@
 /// <reference types="jest" />
-/* eslint-disable @typescript-eslint/init-declarations */
+
 import TypedEvents from '../TypedEvents';
 
 type TMap = {

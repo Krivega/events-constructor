@@ -1,4 +1,3 @@
-/* eslint-disable valid-jsdoc */
 /* eslint-disable @typescript-eslint/no-unnecessary-type-parameters */
 type THandler<T = unknown> = (data: T) => void;
 type TTrigger<T = unknown> = (data: T) => void;

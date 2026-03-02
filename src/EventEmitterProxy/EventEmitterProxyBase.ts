@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import type TypedEvents from '../TypedEvents';
 
 type TStringKeyOf<T> = Extract<keyof T, string>;

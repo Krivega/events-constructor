@@ -1,6 +1,6 @@
-/* eslint-disable import/prefer-default-export */
-import type TypedEvents from '../TypedEvents';
 import { EventEmitterProxyBase } from './EventEmitterProxyBase';
+
+import type TypedEvents from '../TypedEvents';
 
 /**
  * Proxy that exposes event methods (on, once, onRace, onceRace, wait, off)

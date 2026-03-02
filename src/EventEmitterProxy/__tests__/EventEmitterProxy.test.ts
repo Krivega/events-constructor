@@ -1,6 +1,5 @@
 /// <reference types="jest" />
 import TypedEvents from '../../TypedEvents';
-
 import { EventEmitterProxy } from '../EventEmitterProxy';
 
 type TTestEventMap = {
@@ -35,7 +34,6 @@ class TestEventEmitterProxy extends EventEmitterProxy<TTestEventMap> {
 }
 
 describe('EventEmitterProxy', () => {
-  // eslint-disable-next-line @typescript-eslint/init-declarations
   let proxy: TestEventEmitterProxy;
 
   beforeEach(() => {

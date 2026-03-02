@@ -1,5 +1,5 @@
 /// <reference types="jest" />
-/* eslint-disable @typescript-eslint/init-declarations */
+
 import Events from '../Events';
 
 const initEventNames = ['event1', 'event2'] as const;
