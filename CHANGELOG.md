@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.1](https://github.com/Krivega/events-constructor/compare/v2.2.0...v2.2.1) (2026-03-02)
+
+### Bug Fixes
+
+- change events property visibility to public in EventEmitterProxy ([b36229b](https://github.com/Krivega/events-constructor/commit/b36229b11a1de71b4e98e06a868f9bb0a9f40376))
+
 ## [2.2.0](https://github.com/Krivega/events-constructor/compare/v2.1.1...v2.2.0) (2026-03-02)
 
 ### Features
