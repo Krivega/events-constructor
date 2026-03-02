@@ -22,7 +22,7 @@ import type TypedEvents from '../TypedEvents';
 export abstract class EventEmitterProxy<
   TEventMap extends Record<string, unknown>,
 > extends EventEmitterProxyBase<TEventMap> {
-  protected readonly events: TypedEvents<TEventMap>;
+  public readonly events: TypedEvents<TEventMap>;
 
   public constructor(events: TypedEvents<TEventMap>) {
     super();
