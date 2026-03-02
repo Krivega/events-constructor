@@ -316,6 +316,65 @@ const unsubscribe = events.onRace(['userLoaded', 'userError'], (data, eventName)
 unsubscribe();
 ```
 
+### EventEmitterProxy (TypeScript helper)
+
+`EventEmitterProxy` and `EventEmitterProxyBase` help you expose a `TypedEvents` API
+directly on your own classes without repeating boilerplate methods.
+
+```ts
+import { TypedEvents, EventEmitterProxy } from 'events-constructor';
+
+type EventMap = {
+  loaded: { id: string };
+  error: { message: string };
+};
+
+const eventNames = ['loaded', 'error'] as const;
+
+class Loader extends EventEmitterProxy<EventMap> {
+  public constructor() {
+    super(new TypedEvents<EventMap>(eventNames));
+  }
+
+  public async load() {
+    try {
+      // ...
+      this.events.trigger('loaded', { id: '123' });
+    } catch (e) {
+      this.events.trigger('error', { message: String(e) });
+    }
+  }
+}
+
+const loader = new Loader();
+
+// All event methods are available directly on the instance:
+loader.on('loaded', ({ id }) => {
+  console.log('Loaded', id);
+});
+```
+
+If you prefer to provide the `events` field yourself (for example when using
+dependency injection), you can extend `EventEmitterProxyBase`:
+
+```ts
+import { TypedEvents, EventEmitterProxyBase } from 'events-constructor';
+
+type EventMap = {
+  success: void;
+  fail: Error;
+};
+
+class Service extends EventEmitterProxyBase<EventMap> {
+  protected readonly events: TypedEvents<EventMap>;
+
+  public constructor(events: TypedEvents<EventMap>) {
+    super();
+    this.events = events;
+  }
+}
+```
+
 ## Features
 
 - **Type Safety**: Full TypeScript support with compile-time type checking
