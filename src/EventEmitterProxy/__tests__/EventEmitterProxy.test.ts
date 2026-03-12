@@ -11,13 +11,8 @@ type TTestEventMap = {
 const EVENT_NAMES = ['test-event', 'void-event', 'error-event'] as const;
 
 class TestEventEmitterProxy extends EventEmitterProxy<TTestEventMap> {
-  public readonly events: TypedEvents<TTestEventMap>;
-
   public constructor() {
-    const events = new TypedEvents<TTestEventMap>(EVENT_NAMES);
-
-    super(events);
-    this.events = events;
+    super(new TypedEvents<TTestEventMap>(EVENT_NAMES));
   }
 
   public triggerTestEvent(data: { value: string }) {
