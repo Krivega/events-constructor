@@ -829,6 +829,58 @@ describe('TypedEvents', () => {
     });
   });
 
+  describe('subscribersCount and emitsTotal', () => {
+    it('subscribersCount for typed event names', () => {
+      expect(events.subscribersCount('userLoaded')).toBe(0);
+      expect(events.subscribersCount('logout')).toBe(0);
+
+      const h1 = jest.fn();
+      const h2 = jest.fn();
+
+      events.on('userLoaded', h1);
+      expect(events.subscribersCount('userLoaded')).toBe(1);
+
+      events.on('userLoaded', h2);
+      expect(events.subscribersCount('userLoaded')).toBe(2);
+
+      events.off('userLoaded', h1);
+      expect(events.subscribersCount('userLoaded')).toBe(1);
+    });
+
+    it('emitsTotal counts trigger and emit per event', () => {
+      events.on('userLoaded', jest.fn());
+
+      expect(events.emitsTotal('userLoaded')).toBe(0);
+      expect(events.emitsTotal('logout')).toBe(0);
+
+      events.trigger('userLoaded', { id: 'a' });
+      events.emit('userLoaded', { id: 'b' });
+
+      expect(events.emitsTotal('userLoaded')).toBe(2);
+      expect(events.emitsTotal('logout')).toBe(0);
+    });
+
+    it('emitsTotal for void payload event', () => {
+      events.on('logout', jest.fn());
+      events.trigger('logout');
+      events.emit('logout');
+
+      expect(events.emitsTotal('logout')).toBe(2);
+    });
+
+    it('typed API: invalid event name is a type error', () => {
+      expect(() => {
+        // @ts-expect-error — не входит в карту событий
+        events.subscribersCount('unknownEvent');
+      }).toThrow();
+
+      expect(() => {
+        // @ts-expect-error — не входит в карту событий
+        events.emitsTotal('unknownEvent');
+      }).toThrow();
+    });
+  });
+
   describe('utility methods', () => {
     describe('eachTriggersTyped', () => {
       it('should iterate through all triggers', () => {

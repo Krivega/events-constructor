@@ -4,6 +4,7 @@ type TTrigger<T = unknown> = (data: T) => void;
 type THandlerRace<T = unknown> = (data: T, eventName: string) => void;
 type TEventHandlers<T extends string, U = unknown> = Record<T, Set<THandler<U>> | undefined>;
 type TTriggers<T extends string, U = unknown> = Record<T, TTrigger<U> | undefined>;
+type TEmitTotals<T extends string> = Record<T, number>;
 
 const errorNotSupported = <T extends string = string>(eventName: T): Error => {
   const error = new Error(`Event ${eventName} not supported`);
@@ -41,6 +42,8 @@ class Events<T extends readonly string[] = string[]> {
 
   private readonly maxListeners?: number;
 
+  private emitTotals: TEmitTotals<T[number]>;
+
   public constructor(
     eventNames: T,
     { debug, maxListeners }: { debug?: (error: unknown) => void; maxListeners?: number } = {},
@@ -53,6 +56,7 @@ class Events<T extends readonly string[] = string[]> {
 
     this.eventHandlers = {} as TEventHandlers<T[number]>;
     this.triggers = {} as TTriggers<T[number]>;
+    this.emitTotals = {} as TEmitTotals<T[number]>;
 
     this.initEventHandlers(this.eventNames);
   }
@@ -180,6 +184,7 @@ class Events<T extends readonly string[] = string[]> {
       return;
     }
 
+    this.emitTotals[eventName] += 1;
     trigger(data as U);
   }
 
@@ -217,6 +222,18 @@ class Events<T extends readonly string[] = string[]> {
     return this.getHandlers(eventName).size > 0;
   }
 
+  /** Число подписчиков (обработчиков) для указанного события. */
+  public subscribersCount(eventName: T[number]): number {
+    return this.getHandlers(eventName).size;
+  }
+
+  /** Сколько раз для события был вызван `trigger` / `emit` (успешный вызов существующего триггера). */
+  public emitsTotal(eventName: T[number]): number {
+    this.getHandlers(eventName);
+
+    return this.emitTotals[eventName];
+  }
+
   private getHandlers<U = unknown>(eventName: T[number]) {
     const handlers = this.eventHandlers[eventName];
 
@@ -231,6 +248,7 @@ class Events<T extends readonly string[] = string[]> {
     for (const eventName of eventsNames) {
       this.eventHandlers[eventName as T[number]] = new Set<THandler>();
       this.triggers[eventName as T[number]] = this.resolveTrigger(eventName);
+      this.emitTotals[eventName as T[number]] = 0;
     }
   }
 

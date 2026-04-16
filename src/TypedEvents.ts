@@ -63,6 +63,14 @@ class TypedEvents<
     super.off<M[K]>(eventName, handler);
   }
 
+  public override subscribersCount(eventName: EN[number]): number {
+    return super.subscribersCount(eventName);
+  }
+
+  public override emitsTotal(eventName: EN[number]): number {
+    return super.emitsTotal(eventName);
+  }
+
   // Overload for events with payload
   public override trigger<K extends EN[number]>(eventName: K, data: M[K]): void;
   // Overload for events without payload (never/void)
