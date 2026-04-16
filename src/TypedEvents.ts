@@ -63,12 +63,12 @@ class TypedEvents<
     super.off<M[K]>(eventName, handler);
   }
 
-  public override subscribersCount(eventName: EN[number]): number {
-    return super.subscribersCount(eventName);
+  public override getSubscribersCount(eventName: EN[number]): number {
+    return super.getSubscribersCount(eventName);
   }
 
-  public override emitsTotal(eventName: EN[number]): number {
-    return super.emitsTotal(eventName);
+  public override getEmitsTotal(eventName: EN[number]): number {
+    return super.getEmitsTotal(eventName);
   }
 
   // Overload for events with payload

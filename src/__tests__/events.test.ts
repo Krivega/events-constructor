@@ -371,83 +371,83 @@ describe('Events', () => {
         expect(events.hasHandlers(eventName0)).toBe(false);
       });
 
-      it('subscribersCount', () => {
-        expect(events.subscribersCount(eventName0)).toBe(0);
-        expect(events.subscribersCount(eventName1)).toBe(0);
+      it('getSubscribersCount', () => {
+        expect(events.getSubscribersCount(eventName0)).toBe(0);
+        expect(events.getSubscribersCount(eventName1)).toBe(0);
 
         const h1 = jest.fn();
         const h2 = jest.fn();
 
         events.on(eventName0, h1);
-        expect(events.subscribersCount(eventName0)).toBe(1);
+        expect(events.getSubscribersCount(eventName0)).toBe(1);
 
         events.on(eventName0, h2);
-        expect(events.subscribersCount(eventName0)).toBe(2);
+        expect(events.getSubscribersCount(eventName0)).toBe(2);
 
         events.off(eventName0, h1);
-        expect(events.subscribersCount(eventName0)).toBe(1);
+        expect(events.getSubscribersCount(eventName0)).toBe(1);
 
         events.offAll(eventName0);
-        expect(events.subscribersCount(eventName0)).toBe(0);
+        expect(events.getSubscribersCount(eventName0)).toBe(0);
       });
 
-      it('subscribersCount: unsupported event throws', () => {
+      it('getSubscribersCount: unsupported event throws', () => {
         expect(() => {
           // @ts-expect-error
-          events.subscribersCount('unknown');
+          events.getSubscribersCount('unknown');
         }).toThrow(new Error('Event unknown not supported'));
       });
 
-      it('emitsTotal', () => {
-        expect(events.emitsTotal(eventName0)).toBe(0);
-        expect(events.emitsTotal(eventName1)).toBe(0);
+      it('getEmitsTotal', () => {
+        expect(events.getEmitsTotal(eventName0)).toBe(0);
+        expect(events.getEmitsTotal(eventName1)).toBe(0);
 
         events.on(eventName0, mockFunction);
         events.trigger(eventName0, argument);
         events.emit(eventName0, argument);
 
-        expect(events.emitsTotal(eventName0)).toBe(2);
-        expect(events.emitsTotal(eventName1)).toBe(0);
+        expect(events.getEmitsTotal(eventName0)).toBe(2);
+        expect(events.getEmitsTotal(eventName1)).toBe(0);
 
         events.trigger(eventName1, argument);
-        expect(events.emitsTotal(eventName1)).toBe(1);
+        expect(events.getEmitsTotal(eventName1)).toBe(1);
       });
 
-      it('emitsTotal: not incremented when destroyed', () => {
+      it('getEmitsTotal: not incremented when destroyed', () => {
         events.on(eventName0, mockFunction);
         events.trigger(eventName0, argument);
-        expect(events.emitsTotal(eventName0)).toBe(1);
+        expect(events.getEmitsTotal(eventName0)).toBe(1);
 
         events.destroy();
 
         events.trigger(eventName0, argument);
 
-        expect(events.emitsTotal(eventName0)).toBe(1);
+        expect(events.getEmitsTotal(eventName0)).toBe(1);
       });
 
-      it('emitsTotal: incremented while inactive (handlers not run)', () => {
+      it('getEmitsTotal: incremented while inactive (handlers not run)', () => {
         events.on(eventName0, mockFunction);
         events.deactivate();
         events.trigger(eventName0, argument);
 
         expect(mockFunction).toHaveBeenCalledTimes(0);
-        expect(events.emitsTotal(eventName0)).toBe(1);
+        expect(events.getEmitsTotal(eventName0)).toBe(1);
       });
 
-      it('emitsTotal: reset by removeEventHandlers', () => {
+      it('getEmitsTotal: reset by removeEventHandlers', () => {
         events.on(eventName0, mockFunction);
         events.trigger(eventName0, argument);
-        expect(events.emitsTotal(eventName0)).toBe(1);
+        expect(events.getEmitsTotal(eventName0)).toBe(1);
 
         events.removeEventHandlers();
 
-        expect(events.emitsTotal(eventName0)).toBe(0);
+        expect(events.getEmitsTotal(eventName0)).toBe(0);
       });
 
-      it('emitsTotal: unsupported event throws', () => {
+      it('getEmitsTotal: unsupported event throws', () => {
         expect(() => {
           // @ts-expect-error
-          events.emitsTotal('unknown');
+          events.getEmitsTotal('unknown');
         }).toThrow(new Error('Event unknown not supported'));
       });
 

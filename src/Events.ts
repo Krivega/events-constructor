@@ -223,12 +223,12 @@ class Events<T extends readonly string[] = string[]> {
   }
 
   /** Число подписчиков (обработчиков) для указанного события. */
-  public subscribersCount(eventName: T[number]): number {
+  public getSubscribersCount(eventName: T[number]): number {
     return this.getHandlers(eventName).size;
   }
 
   /** Сколько раз для события был вызван `trigger` / `emit` (успешный вызов существующего триггера). */
-  public emitsTotal(eventName: T[number]): number {
+  public getEmitsTotal(eventName: T[number]): number {
     this.getHandlers(eventName);
 
     return this.emitTotals[eventName];
